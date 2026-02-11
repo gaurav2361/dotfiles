@@ -27,6 +27,12 @@
       allowed-signers = {
         path = "/Users/gaurav/.ssh/allowed_signers";
       };
+      indiefluence-vps = {
+        path = "/Users/gaurav/.ssh/indiefluence_vps";
+      };
+      indiefluence-vps-pub = {
+        path = "/Users/gaurav/.ssh/indiefluence_vps.pub";
+      };
     };
   };
 
