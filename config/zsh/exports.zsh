@@ -31,8 +31,9 @@ setopt AUTO_LIST            # Automatically list choices on ambiguous completion
 setopt COMPLETE_IN_WORD     # Complete from both ends of a word.
 
 # export EDITOR="nvim"
-export EDITOR="nvim visudo"
-export VISUAL="nvim visudo"
+export EDITOR="nvim"
+export VISUAL="nvim"
+export SOPS_AGE_KEY_FILE="$HOME/.config/sops/age/keys.txt"
 export SUDO_EDITOR="nvim"
 export TERMINAL="ghostty"
 # export BROWSER="zen-browser"
