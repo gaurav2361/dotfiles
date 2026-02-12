@@ -11,6 +11,7 @@
     gcc
     git-ignore
     gnumake
+    markdown-oxide
     go
     pkg-config
     coreutils

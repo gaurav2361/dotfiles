@@ -161,6 +161,7 @@
       "iordv/tap/droppy"
       "finetune"
       "keyboardcleantool"
+      "motrix"
       # "adobe-creative-cloud"
       # "epic-games"
     ];
