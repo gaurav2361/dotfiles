@@ -23,6 +23,12 @@
         DisableConsoleAccess = true;
       };
 
+      screencapture = {
+        location = "~/Pictures/screenshots";
+        target = "file";
+        type = "png";
+      };
+
       finder = {
         NewWindowTarget = "Home"; # new finder windows open home dir
         AppleShowAllFiles = true; # hidden files
@@ -43,6 +49,7 @@
         NSAutomaticWindowAnimationsEnabled = true; # on/off animations of windows closing/opening
         NSDocumentSaveNewDocumentsToCloud = false; # default save to disk, not iCloud
         # AppleInterfaceStyle = Dark; # dark mode
+        "com.apple.trackpad.scaling" = 3.0;
         AppleShowAllExtensions = true;
         InitialKeyRepeat = 15;
         KeyRepeat = 2;
@@ -57,6 +64,10 @@
         show-process-indicators = true;
         tilesize = 32;
         autohide-time-modifier = 1.0;
+        wvous-tl-corner = 1;
+        wvous-tr-corner = 1;
+        wvous-bl-corner = 1;
+        wvous-br-corner = 1;
       };
       controlcenter = {
         BatteryShowPercentage = true;
