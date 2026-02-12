@@ -55,7 +55,7 @@ in
       gnumake
       go
       gcc
-      phpPackages.composer
+      # phpPackages.composer
       biome
       python313
       python313Packages.pip
