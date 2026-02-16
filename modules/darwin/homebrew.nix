@@ -177,8 +177,8 @@
       "tree-sitter-cli"
       "tree-sitter"
       "mole"
+      "libiconv"
       # "qbittorrent"
-      # "motrix"
     ];
 
     # Mac App Store apps
