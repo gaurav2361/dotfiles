@@ -17,13 +17,16 @@
     ../../home/btop.nix
     ../../home/git.nix
     ../../home/lazygit.nix
+    ../../home/gh.nix
+    ../../home/jujutsu.nix
     ../../home/lazydocker.nix
     ../../home/editor/neovim.nix
     ../../home/editor/zed.nix
     ../../home/fastfetch.nix
     ../../home/bat.nix
-    ../../home/gh.nix
     ../../home/node.nix
+    ../../home/rust.nix
+    # ../../home/zig.nix
     ../../home/ghostty.nix
     ../../home/atuin.nix
     ../../home/aerospace.nix
