@@ -7,9 +7,8 @@
   home.packages = with pkgs; [
     delta
     git-cliff
-    jujutsu
-    jjui
     gitoxide
+    git-open
   ];
   programs.git = {
     enable = true;
@@ -23,4 +22,5 @@
   home.file.".config/git".source = builtins.toString (
     config.lib.file.mkOutOfStoreSymlink ../config/git
   );
+
 }
