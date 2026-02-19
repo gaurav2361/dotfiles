@@ -12,6 +12,7 @@
     git-ignore
     gnumake
     markdown-oxide
+    uv
     go
     pkg-config
     coreutils
