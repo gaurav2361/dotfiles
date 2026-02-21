@@ -17,6 +17,7 @@
     pkg-config
     coreutils
     nodejs_22
+    python313
     cargo
     nixd
     rustc
