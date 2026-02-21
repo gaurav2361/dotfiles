@@ -22,15 +22,23 @@ let
     tree-sitter-markdown
     tree-sitter-json
     ;
+
+  python313Env = pkgs.python313.withPackages (
+    ps: with ps; [
+      pynvim
+      pip
+    ]
+  );
 in
 {
   home.packages = with pkgs; [
-    nixfmt # Provides 'nixfmt' binary
+    nixfmt
     statix
-    alejandra
   ];
+
   programs.neovim = {
     enable = true;
+    withPython3 = false;
     extraPackages = with pkgs; [
       tree-sitter
       lua54Packages.jsregexp
@@ -51,14 +59,12 @@ in
       nixfmt-rfc-style
       statix
       selene
-      alejandra
       gnumake
       go
       gcc
       # phpPackages.composer
       biome
-      python313
-      python313Packages.pip
+      python313Env
       uv
       gopls
       gofumpt
@@ -73,6 +79,7 @@ in
       libiconv
       harper
     ];
+
     extraWrapperArgs = [
       "--suffix"
       "LIBRARY_PATH"
