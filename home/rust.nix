@@ -46,10 +46,7 @@ in
 
     # Better than manual strings: use the TOML generator
     file.".cargo/config.toml".source = (pkgs.formats.toml { }).generate "cargo-config" {
-      build = {
-        # Dynamically set jobs based on CPU threads
-        jobs = config.lib.nixpkgs.parallelStock or 0;
-      };
+      # The 'build' block was removed so Cargo defaults to all available CPU cores.
       install = {
         root = cargoHome;
       };
