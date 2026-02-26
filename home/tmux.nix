@@ -4,7 +4,6 @@
     sesh
     tmuxinator
     yq
-    tmuxp
   ];
   programs.tmux = {
     enable = true;

@@ -16,15 +16,15 @@
       url = "github:zhaofengli-wip/nix-homebrew";
     };
     homebrew-core = {
-      url = "github:homebrew/homebrew-core";
+      url = "git+https://github.com/homebrew/homebrew-core";
       flake = false;
     };
     homebrew-cask = {
-      url = "github:homebrew/homebrew-cask";
+      url = "git+https://github.com/homebrew/homebrew-cask";
       flake = false;
     };
     homebrew-bundle = {
-      url = "github:homebrew/homebrew-bundle";
+      url = "git+https://github.com/homebrew/homebrew-bundle";
       flake = false;
     };
     brew-nix = {
@@ -123,7 +123,21 @@
         modules = [
           ./hosts/coffee/default.nix
           {
-            nixpkgs.overlays = [ inputs.brew-nix.overlays.default ];
+            nixpkgs.overlays = [
+              inputs.brew-nix.overlays.default
+              (final: prev: {
+                pythonPackagesExtensions = prev.pythonPackagesExtensions ++ [
+                  (python-final: python-prev: {
+                    # Fix Jeepney D-Bus test failures and import checks
+                    jeepney = python-prev.jeepney.overridePythonAttrs (oldAttrs: {
+                      doInstallCheck = false;
+                      doCheck = false;
+                      pythonImportsCheck = [ "jeepney" ];
+                    });
+                  })
+                ];
+              })
+            ];
           }
           home-manager.darwinModules.home-manager
           determinate.darwinModules.default
