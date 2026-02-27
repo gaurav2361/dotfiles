@@ -16,15 +16,15 @@
       url = "github:zhaofengli-wip/nix-homebrew";
     };
     homebrew-core = {
-      url = "git+https://github.com/homebrew/homebrew-core";
+      url = "github:homebrew/homebrew-core";
       flake = false;
     };
     homebrew-cask = {
-      url = "git+https://github.com/homebrew/homebrew-cask";
+      url = "github:homebrew/homebrew-cask";
       flake = false;
     };
     homebrew-bundle = {
-      url = "git+https://github.com/homebrew/homebrew-bundle";
+      url = "github:homebrew/homebrew-bundle";
       flake = false;
     };
     brew-nix = {
