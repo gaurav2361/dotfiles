@@ -18,6 +18,7 @@
     coreutils
     nodejs_22
     python313
+    just
     cargo
     nixd
     rustc
