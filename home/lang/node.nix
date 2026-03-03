@@ -4,32 +4,41 @@
   lib,
   ...
 }:
+let
+  cfg = config.lang.node;
+  npmGlobalDir = "${config.home.homeDirectory}/.npm";
+in
 {
-  home =
-    let
-      npmGlobalDir = "${config.home.homeDirectory}/.npm";
-    in
-    {
+  options.lang.node = {
+    enable = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+      description = "Node.js, Bun, and PNPM development environment";
+    };
+  };
+
+  config = lib.mkIf cfg.enable {
+    home = {
       packages = with pkgs; [
-        npm-check-updates # (ncu) Find newer versions of package dependencies and check outdated npm packages locally or globally.
+        nodejs_24
         nodePackages.pnpm
         bun
+        npm-check-updates
         npkill
-        nodejs_24
         husky
         biome
       ];
 
       sessionVariables = {
-        #   # https://github.com/npm/cli/issues/7857#issuecomment-2481331001
+        # Suppress experimental warnings (e.g., when using newer node features)
         NODE_OPTIONS = "--disable-warning=ExperimentalWarning";
       };
 
       sessionPath = [ "${npmGlobalDir}/bin" ];
 
-      activation.init = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-        mkdir -p ${npmGlobalDir}/bin \
-                 ${npmGlobalDir}/lib
+      # Ensure the global npm directories exist for manual 'npm install -g'
+      activation.initNode = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+        $DRY_RUN_CMD mkdir -p ${npmGlobalDir}/bin ${npmGlobalDir}/lib
       '';
 
       file = {
@@ -48,9 +57,9 @@
           peer = true
           production = false
           exact = true
-
           auto = "fallback"
         '';
       };
     };
+  };
 }

@@ -14,33 +14,7 @@ in
     spotidownloader
   ];
   imports = [
-    ../../home/tmux.nix
-    ../../home/zsh.nix
-    # ../../home/nushell.nix
-    # ../../home/zen
-    # ../../home/zen.nix
-    ../../home/direnv.nix
-    ../../home/starship.nix
-    ../../home/nh.nix
-    ../../home/btop.nix
-    ../../home/git.nix
-    ../../home/lazygit.nix
-    ../../home/gh.nix
-    ../../home/jujutsu.nix
-    ../../home/lazydocker.nix
-    ../../home/editor/neovim.nix
-    ../../home/editor/zed.nix
-    ../../home/fastfetch.nix
-    ../../home/bat.nix
-    ../../home/node.nix
-    ../../home/rust.nix
-    # ../../home/zig.nix
-    ../../home/ghostty.nix
-    ../../home/atuin.nix
-    ../../home/aerospace.nix
-    ../../home/mpv.nix
-    ../../home/spicetify.nix
-
+    ../../home
     ./secrets
   ];
 
@@ -77,5 +51,11 @@ in
     "$HOME/.cargo/bin"
     "/opt/homebrew/bin"
   ];
+  lang = {
+    rust.enable = true;
+    node.enable = true;
+    zig.enable = true;
+    python.enable = true;
+  };
   programs.home-manager.enable = true;
 }
