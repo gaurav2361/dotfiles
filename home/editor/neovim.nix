@@ -56,7 +56,7 @@ in
       lua51Packages.luarocks-nix
       luarocks
       nixd
-      nixfmt-rfc-style
+      nixfmt
       statix
       selene
       gnumake
