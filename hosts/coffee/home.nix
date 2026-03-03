@@ -4,12 +4,8 @@
   lib,
   ...
 }:
-let
-  spotiflac = pkgs.callPackage ../../pkgs/spotiflac.nix { };
-  spotidownloader = pkgs.callPackage ../../pkgs/spotidownloader.nix { };
-in
 {
-  home.packages = [
+  home.packages = with pkgs; [
     spotiflac
     spotidownloader
   ];

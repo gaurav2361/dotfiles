@@ -37,6 +37,7 @@
       url = "github:BatteredBunny/brew-api";
       flake = false;
     };
+    nur.url = "github:nix-community/NUR";
     disko = {
       url = "github:nix-community/disko/latest";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -80,13 +81,23 @@
       homebrew-cask,
       ...
     }@inputs:
+    let
+      overlays = import ./overlays { inherit inputs; };
+    in
     {
+      inherit overlays;
       nixosConfigurations = {
         atlas = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           specialArgs = { inherit inputs self; };
           modules = [
             ./hosts/atlas/default.nix
+            {
+              nixpkgs.overlays = [
+                overlays.additions
+                overlays.modifications
+              ];
+            }
             home-manager.nixosModules.home-manager
             {
               home-manager.useGlobalPkgs = false;
@@ -105,6 +116,12 @@
             disko.nixosModules.disko
             ./hosts/hades/default.nix
             ./hosts/hades/disko-config.nix
+            {
+              nixpkgs.overlays = [
+                overlays.additions
+                overlays.modifications
+              ];
+            }
             home-manager.nixosModules.home-manager
             {
               home-manager.useGlobalPkgs = false;
@@ -125,6 +142,8 @@
           {
             nixpkgs.overlays = [
               inputs.brew-nix.overlays.default
+              overlays.additions
+              overlays.modifications
               (final: prev: {
                 pythonPackagesExtensions = prev.pythonPackagesExtensions ++ [
                   (python-final: python-prev: {
