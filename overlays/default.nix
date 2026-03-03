@@ -9,5 +9,16 @@
       system = final.stdenv.hostPlatform.system;
       config.allowUnfree = true;
     };
+
+    # Fix Jeepney D-Bus test failures and import checks
+    # pythonPackagesExtensions = prev.pythonPackagesExtensions ++ [
+    #   (python-final: python-prev: {
+    #     jeepney = python-prev.jeepney.overridePythonAttrs (oldAttrs: {
+    #       doInstallCheck = false;
+    #       doCheck = false;
+    #       pythonImportsCheck = [ "jeepney" ];
+    #     });
+    #   })
+    # ];
   };
 }
