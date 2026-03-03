@@ -5,6 +5,7 @@
   ...
 }:
 let
+  cfg = config.editors.neovim;
   inherit (pkgs)
     tree-sitter
     lua54Packages
@@ -31,68 +32,73 @@ let
   );
 in
 {
-  home.packages = with pkgs; [
-    nixfmt
-    statix
-  ];
-
-  programs.neovim = {
-    enable = true;
-    withPython3 = false;
-    extraPackages = with pkgs; [
-      tree-sitter
-      lua54Packages.jsregexp
-
-      nodejs_22
-      nodePackages_latest.vscode-json-languageserver
-      vscode-langservers-extracted
-      tailwindcss-language-server
-      fzf
-      unzip
-      lua
-      lua-language-server
-      lua53Packages.luacheck
-      luajitPackages.jsregexp
-      lua51Packages.luarocks-nix
-      luarocks
-      nixd
+  options.editors.neovim = {
+    enable = lib.mkEnableOption "Nvim Editor with custom dotfiles symlink";
+  };
+  config = lib.mkIf cfg.enable {
+    home.packages = with pkgs; [
       nixfmt
       statix
-      selene
-      gnumake
-      go
-      gcc
-      # phpPackages.composer
-      biome
-      python313Env
-      uv
-      gopls
-      gofumpt
-      stylua
-      cargo
-      wordnet
-      rustc
-      rustup
-      rustfmt
-      ripgrep
-      imagemagick
-      libiconv
-      harper
     ];
 
-    extraWrapperArgs = [
-      "--suffix"
-      "LIBRARY_PATH"
-      ":"
-      "${lib.makeLibraryPath [ pkgs.stdenv.cc.cc.lib ]}"
-    ];
+    programs.neovim = {
+      enable = true;
+      withPython3 = false;
+      extraPackages = with pkgs; [
+        tree-sitter
+        lua54Packages.jsregexp
 
-    plugins = [
-      vimPlugins.nvim-treesitter.withAllGrammars
-    ];
+        nodejs_22
+        nodePackages_latest.vscode-json-languageserver
+        vscode-langservers-extracted
+        tailwindcss-language-server
+        fzf
+        unzip
+        lua
+        lua-language-server
+        lua53Packages.luacheck
+        luajitPackages.jsregexp
+        lua51Packages.luarocks-nix
+        luarocks
+        nixd
+        nixfmt
+        statix
+        selene
+        gnumake
+        go
+        gcc
+        # phpPackages.composer
+        biome
+        python313Env
+        uv
+        gopls
+        gofumpt
+        stylua
+        cargo
+        wordnet
+        rustc
+        rustup
+        rustfmt
+        ripgrep
+        imagemagick
+        libiconv
+        harper
+      ];
+
+      extraWrapperArgs = [
+        "--suffix"
+        "LIBRARY_PATH"
+        ":"
+        "${lib.makeLibraryPath [ pkgs.stdenv.cc.cc.lib ]}"
+      ];
+
+      plugins = [
+        vimPlugins.nvim-treesitter.withAllGrammars
+      ];
+    };
+
+    home.file.".config/nvim".source = builtins.toString (
+      config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/config/nvim"
+    );
   };
-
-  home.file.".config/nvim".source = builtins.toString (
-    config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/config/nvim"
-  );
 }

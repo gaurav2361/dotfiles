@@ -1,13 +1,25 @@
 {
+  config,
   pkgs,
   lib,
   ...
 }:
+let
+  cfg = config.editors.vscode;
+in
 {
-  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [ "vscode" ];
+  options.editors.vscode = {
+    enable = lib.mkEnableOption "Visual Studio Code";
+  };
 
-  programs.vscode = {
-    enable = true;
-    package = pkgs.vscode;
+  config = lib.mkIf cfg.enable {
+    # Allow the VS Code binary even though it's unfree
+    nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [ "vscode" ];
+
+    programs.vscode = {
+      enable = true;
+      package = pkgs.vscode;
+      # You can add extensions = with pkgs.vscode-extensions; [ ... ] here later
+    };
   };
 }

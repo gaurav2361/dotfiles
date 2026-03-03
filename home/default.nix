@@ -6,6 +6,7 @@
     # ./zen.nix
 
     ./lang
+    ./editor
     ./tmux.nix
     ./zsh.nix
     ./direnv.nix
@@ -17,8 +18,6 @@
     ./gh.nix
     ./jujutsu.nix
     ./lazydocker.nix
-    ./editor/neovim.nix
-    ./editor/zed.nix
     ./fastfetch.nix
     ./bat.nix
     ./ghostty.nix
@@ -27,4 +26,8 @@
     ./mpv.nix
     ./spicetify.nix
   ];
+
+  editors = {
+    neovim.enable = true;
+  };
 }

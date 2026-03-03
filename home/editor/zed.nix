@@ -1,14 +1,24 @@
 {
-  pkgs,
   config,
+  pkgs,
   lib,
   ...
 }:
+let
+  cfg = config.editors.zed;
+in
 {
-  programs.zed-editor = {
-    enable = true;
+  options.editors.zed = {
+    enable = lib.mkEnableOption "Zed Editor with custom dotfiles symlink";
   };
-  home.file.".config/zed".source = builtins.toString (
-    config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/config/zed"
-  );
+
+  config = lib.mkIf cfg.enable {
+    programs.zed-editor = {
+      enable = true;
+    };
+
+    # Links your ~/.config/zed to your local dotfiles folder
+    home.file.".config/zed".source =
+      config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/config/zed";
+  };
 }

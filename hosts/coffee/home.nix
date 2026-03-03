@@ -18,6 +18,17 @@ in
     ./secrets
   ];
 
+  lang = {
+    rust.enable = true;
+    node.enable = true;
+    zig.enable = true;
+    python.enable = true;
+  };
+  editors = {
+    neovim.enable = true;
+    zed.enable = true;
+  };
+
   # These MUST be set for Darwin
   home.username = "gaurav";
   home.homeDirectory = "/Users/gaurav";
@@ -43,7 +54,6 @@ in
     TERM = "ghostty";
     EDITOR = "nvim";
     SHELL = "zsh";
-    # SHELL = "${pkgs.nushell}/bin/nu";
   };
   home.sessionPath = [
     "/run/current-system/sw/bin"
@@ -51,11 +61,5 @@ in
     "$HOME/.cargo/bin"
     "/opt/homebrew/bin"
   ];
-  lang = {
-    rust.enable = true;
-    node.enable = true;
-    zig.enable = true;
-    python.enable = true;
-  };
   programs.home-manager.enable = true;
 }
