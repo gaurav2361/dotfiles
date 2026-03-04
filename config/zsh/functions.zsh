@@ -14,26 +14,14 @@ function y() {
 	rm -f -- "$tmp"
 }
 
-function zoxide_fzf() {
-    local orig_buffer=$LBUFFER
-    local selection
-    selection=$(zoxide query --list | fzf --height 40% --reverse --border) || {
-        LBUFFER=$orig_buffer
-        zle redisplay
-        return 0
-    }
 
-    if [[ -n "$selection" ]]; then
-        LBUFFER+="$selection"
-        zle redisplay
-    fi
-}
 
 # Direnv hook
 eval "$(direnv hook zsh)"
 
 # Base URL for the templates
-NIX_TEMPLATE_URL="https://flakehub.com/f/the-nix-way/dev-templates/*"
+# NIX_TEMPLATE_URL="https://flakehub.com/f/the-nix-way/dev-templates/*"
+NIX_TEMPLATE_URL="github:gaurav2361/templates"
 
 # Initialize the current directory with a template
 function nix-init {
@@ -63,19 +51,3 @@ function nix-new {
   direnv allow
 }
 
-function sesh-sessions() {
-  {
-    exec </dev/tty
-    exec <&1
-    local session
-    session=$(sesh list -t -c | fzf --height 40% --reverse --border-label ' sesh ' --border --prompt '⚡  ')
-    zle reset-prompt > /dev/null 2>&1 || true
-    [[ -z "$session" ]] && return
-    sesh connect $session
-  }
-}
-
-zle     -N             sesh-sessions
-bindkey -M emacs '\es' sesh-sessions
-bindkey -M vicmd '\es' sesh-sessions
-bindkey -M viins '\es' sesh-sessions
