@@ -20,7 +20,7 @@
   # };
 
   home.file.".config/git".source = builtins.toString (
-    config.lib.file.mkOutOfStoreSymlink ../config/git
+    config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/config/git"
   );
 
 }
