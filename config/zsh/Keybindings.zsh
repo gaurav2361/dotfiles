@@ -1,14 +1,6 @@
 #!/bin/sh
 
-bindkey -v
-bindkey '^p' history-search-backward
-bindkey '^n' history-search-forward
-bindkey '^k' history-substring-backward
-bindkey '^j' atuin-up-search
-bindkey '^r' atuin-search
 bindkey '^[w' kill-region
-bindkey '^[[A' history-substring-search-up
-bindkey '^[[B' history-substring-search-down
 
 function sesh-sessions-widget() {
   {
@@ -35,22 +27,8 @@ function sesh-zoxide-widget() {
 }
 zle -N sesh-zoxide-widget
 
-# Bind after zsh-vi-mode init
-zvm_after_init_commands+=('bindkey "^f" sesh-zoxide-widget')
-zvm_after_init_commands+=('bindkey "^[f" sesh-zoxide-widget')
-zvm_after_init_commands+=('bindkey "^s" sesh-sessions-widget')
-zvm_after_init_commands+=('bindkey "^[s" sesh-sessions-widget')
-
-zvm_after_init_commands+=('bindkey -M viins "^f" sesh-zoxide-widget')
-zvm_after_init_commands+=('bindkey -M viins "^[f" sesh-zoxide-widget')
-zvm_after_init_commands+=('bindkey -M viins "^s" sesh-sessions-widget')
-zvm_after_init_commands+=('bindkey -M viins "^[s" sesh-sessions-widget')
-
-zvm_after_init_commands+=('bindkey -M vicmd "^f" sesh-zoxide-widget')
-zvm_after_init_commands+=('bindkey -M vicmd "^[f" sesh-zoxide-widget')
-zvm_after_init_commands+=('bindkey -M vicmd "^s" sesh-sessions-widget')
-zvm_after_init_commands+=('bindkey -M vicmd "^[s" sesh-sessions-widget')
-
-# bindkey -M vicmd 'k' history-substring-backward
-# bindkey -M vicmd 'j' history-substring-search-down
-ZVM_VI_INSERT_ESCAPE_BINDKEY=jk
+# Sesh bindings (this file is sourced from zvm_after_init, so direct bindkey works)
+bindkey -M viins '^[f' sesh-zoxide-widget
+bindkey -M viins '^[s' sesh-sessions-widget
+bindkey -M vicmd '^[f' sesh-zoxide-widget
+bindkey -M vicmd '^[s' sesh-sessions-widget

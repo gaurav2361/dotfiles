@@ -23,11 +23,12 @@
     carapace
     vivid
     zinit
+    zsh-autocomplete
   ];
 
   programs.zsh = {
     enable = true;
-    initContent = builtins.readFile ../config/zsh/.zshrc;
+    initContent = ''source "$HOME/.config/zsh/.zshrc"'';
   };
 
   # home.file.".config/zsh".source = builtins.toString (

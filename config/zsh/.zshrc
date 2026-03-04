@@ -1,62 +1,84 @@
 #!/bin/sh
 
+# ── Zinit bootstrap ─────────────────────────────────────────────────
 ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 [ ! -d $ZINIT_HOME ] && mkdir -p "$(dirname $ZINIT_HOME)"
-[ ! -d $ZINIT_HOME/.git ] && git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
+[ ! -d $ZINIT_HOME/.git ] && git clone --depth=2 https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
 source "${ZINIT_HOME}/zinit.zsh"
 
 # Should be called before compinit
 zmodload zsh/complist
 
-# Load completions
-autoload -Uz _zinit && compinit && compinit
-(( ${+_comps} )) && _comps[zinit]=_zinit
-
-autoload -U compinit; compinit
-_comp_options+=(globdots) # With hidden files
-
-# Use a persistent, fast zcompdump location
-ZCDUMP="$HOME/.cache/zcompdump"
-
-
-# Add in zsh plugins
-zinit light Aloxaf/fzf-tab
-zinit light hlissner/zsh-autopair
-zinit ice depth=1
-zinit light jeffreytse/zsh-vi-mode
-zinit light zsh-users/zsh-completions
-zinit light zsh-users/zsh-autosuggestions
-zinit light zsh-users/zsh-syntax-highlighting
-zinit load zsh-users/zsh-history-substring-search
-zinit load zdharma-continuum/history-search-multi-word
-zinit light zdharma-continuum/fast-syntax-highlighting
-
-
-ZVM_SYSTEM_CLIPBOARD_ENABLED=true
-# Append a command directly
-zvm_after_init_commands+=('[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh')
-
-# source
-source "$HOME/.config/zsh/zstyle.zsh"
-source "$HOME/.config/zsh/aliases.zsh"
-source "$HOME/.config/zsh/exports.zsh"
-source "$HOME/.config/zsh/functions.zsh"
-source "$HOME/.config/zsh/Keybindings.zsh"
+# ── Catppuccin theme (must be sourced BEFORE syntax-highlighting loads) ──
 source "$HOME/.config/zsh/catppuccin_mocha-zsh-syntax-highlighting.zsh"
 
-# Prevent Zsh from throwing errors on unmatched globs (e.g. *, ?, # in commands)
-setopt no_nomatch
+# ── Source config modules ────────────────────────────────────────────
+source "$HOME/.config/zsh/exports.zsh"
+source "$HOME/.config/zsh/aliases.zsh"
+source "$HOME/.config/zsh/functions.zsh"
 
-# Initialize Carapace with Catppuccin colors
-source <(carapace _carapace)
+# ── Synchronous plugins (needed at prompt-draw time) ────────────────
+ZVM_VI_INSERT_ESCAPE_BINDKEY=jk
+ZVM_SYSTEM_CLIPBOARD_ENABLED=true
+zinit ice depth=1
+zinit light jeffreytse/zsh-vi-mode
+zinit light zsh-users/zsh-autosuggestions
 
-# Add in Starship
+# ── Turbo-loaded plugins (deferred, non-blocking) ───────────────────
+zinit wait lucid for \
+    Aloxaf/fzf-tab \
+    hlissner/zsh-autopair \
+  atload"zicompinit; zicdreplay; source <(carapace _carapace)" blockf \
+    zsh-users/zsh-completions \
+    zsh-users/zsh-syntax-highlighting \
+  atload'bindkey "^[[A" history-substring-search-up; bindkey "^[[B" history-substring-search-down; bindkey "^p" history-search-backward; bindkey "^n" history-search-forward' \
+    zsh-users/zsh-history-substring-search \
+    zdharma-continuum/history-search-multi-word
+
+# ── pnpm shell completion ────────────────────────────────────────────
+zinit ice atload"zpcdreplay" atclone"./zplug.zsh" atpull"%atclone"
+zinit light g-plane/pnpm-shell-completion
+source "$HOME/.config/zsh/completion-for-pnpm.zsh"
+
+# ── Keybindings ──────────────────────────────────────────────────────
+# Atuin bindings (must be in array BEFORE vi-mode init runs)
+zvm_after_init_commands+=('bindkey -M viins "^k" atuin-up-search')
+zvm_after_init_commands+=('bindkey -M vicmd "^k" atuin-up-search')
+zvm_after_init_commands+=('bindkey -M viins "^r" atuin-search')
+zvm_after_init_commands+=('bindkey -M vicmd "^r" atuin-search')
+# Source remaining keybindings after vi-mode is ready
+zvm_after_init_commands+=('source "$HOME/.config/zsh/Keybindings.zsh"')
+zvm_after_init_commands+=('[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh')
+
+# ── zstyle (completion styling) ──────────────────────────────────────
+source "$HOME/.config/zsh/zstyle.zsh"
+
+# ── Shell options ────────────────────────────────────────────────────
+setopt no_nomatch  # Prevent Zsh from throwing errors on unmatched globs
+
+# ── Init cache for heavy eval tools ─────────────────────────────────
+# Writes static cache files so we avoid fork+exec on every startup.
+typeset -g ZSH_CACHE_DIR="$HOME/.cache/zsh"
+[[ -d "$ZSH_CACHE_DIR" ]] || mkdir -p "$ZSH_CACHE_DIR"
+
+function _cached_eval {
+  local name=$1; shift
+  local cache_file="$ZSH_CACHE_DIR/$name.zsh"
+  local bin_path="${commands[$1]:-}"
+
+  # Rebuild cache if missing or if the binary is newer
+  if [[ ! -f "$cache_file" ]] || [[ -n "$bin_path" && "$bin_path" -nt "$cache_file" ]]; then
+    "$@" > "$cache_file" 2>/dev/null
+  fi
+  source "$cache_file"
+}
+
+# Starship prompt
 export STARSHIP_CONFIG=~/.config/starship.toml
-eval "$(starship init zsh)"
+_cached_eval starship starship init zsh
 
 # Shell integrations
-eval "$(fzf --zsh)"
-eval "$(zoxide init --cmd cd zsh)"
-eval "$(atuin init zsh --disable-up-arrow)"
+_cached_eval fzf fzf --zsh
+_cached_eval zoxide zoxide init --cmd cd zsh
+_cached_eval atuin atuin init zsh --disable-up-arrow
 
-# alias ni="NVIM_APPNAME=nvim-ni nvim"
