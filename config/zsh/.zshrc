@@ -30,6 +30,7 @@ zinit wait lucid for \
     hlissner/zsh-autopair \
   atload"zicompinit; zicdreplay; source <(carapace _carapace)" blockf \
     zsh-users/zsh-completions \
+    michakfromparis/zsh-pnpm-completions \
     zsh-users/zsh-syntax-highlighting \
   atload'bindkey "^[[A" history-substring-search-up; bindkey "^[[B" history-substring-search-down; bindkey "^p" history-search-backward; bindkey "^n" history-search-forward' \
     zsh-users/zsh-history-substring-search \
@@ -73,9 +74,17 @@ function _cached_eval {
   source "$cache_file"
 }
 
-# Starship prompt
-export STARSHIP_CONFIG=~/.config/starship.toml
-_cached_eval starship starship init zsh
+# ── Native Prompt ───────────────────────────────────────────────────
+autoload -U colors && colors
+setopt prompt_subst
+
+PROMPT="%(?:%{$fg_bold[green]%}%1{➜%} :%{$fg_bold[red]%}%1{➜%} ) %{$fg[cyan]%}%c%{$reset_color%}"
+PROMPT+=' $(git_prompt_info)'
+
+ZSH_THEME_GIT_PROMPT_PREFIX="%{$fg_bold[blue]%}git:(%{$fg[red]%}"
+ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%} "
+ZSH_THEME_GIT_PROMPT_DIRTY="%{$fg[blue]%}) %{$fg[yellow]%}%1{✗%}"
+ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg[blue]%})"
 
 # Shell integrations
 _cached_eval fzf fzf --zsh

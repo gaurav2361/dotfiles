@@ -51,3 +51,21 @@ function nix-new {
   direnv allow
 }
 
+# ── Git Prompt Helpers ───────────────────────────────────────────────
+function parse_git_dirty() {
+  local STATUS=''
+  if [[ -n $(command git status --porcelain 2> /dev/null | tail -n1) ]]; then
+    STATUS="$ZSH_THEME_GIT_PROMPT_DIRTY"
+  else
+    STATUS="$ZSH_THEME_GIT_PROMPT_CLEAN"
+  fi
+  echo "$STATUS"
+}
+
+function git_prompt_info() {
+  local ref
+  if ref=$(command git symbolic-ref HEAD 2> /dev/null) || \
+     ref=$(command git rev-parse --short HEAD 2> /dev/null); then
+    echo "$ZSH_THEME_GIT_PROMPT_PREFIX${ref#refs/heads/}$(parse_git_dirty)$ZSH_THEME_GIT_PROMPT_SUFFIX"
+  fi
+}
