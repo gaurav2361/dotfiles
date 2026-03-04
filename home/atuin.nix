@@ -25,4 +25,7 @@
     #   keymap_mode = "vim-insert";
     # };
   };
+  home.file.".config/atuin/config.toml" = {
+    source = ../config/atuin/config.toml;
+  };
 }
