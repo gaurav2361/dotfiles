@@ -57,12 +57,9 @@ zvm_after_init_commands+=('[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh')
 # zstyle (completion styling)
 source "$HOME/.config/zsh/zstyle.zsh"
 
-# Shell options
-setopt no_nomatch  # Prevent Zsh from throwing errors on unmatched globs
 
 # Native Prompt
 autoload -U colors && colors
-setopt prompt_subst
 
 PROMPT="%(?:%{$fg_bold[green]%}%1{➜%} :%{$fg_bold[red]%}%1{➜%} ) %{$fg[cyan]%}%c%{$reset_color%}"
 PROMPT+=' $(git_prompt_info)'

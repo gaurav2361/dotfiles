@@ -16,8 +16,8 @@ function y() {
 
 
 
-# Direnv hook
-eval "$(direnv hook zsh)"
+# Direnv hook (cached)
+_cached_eval direnv direnv hook zsh
 
 # Base URL for the templates
 # NIX_TEMPLATE_URL="https://flakehub.com/f/the-nix-way/dev-templates/*"
