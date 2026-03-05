@@ -23,7 +23,6 @@
     carapace
     vivid
     zinit
-    zsh-autocomplete
   ];
 
   programs.zsh = {
