@@ -1,0 +1,63 @@
+shell = "zsh"
+
+[templates]
+defer = """{% for file in files %}zsh-defer source "{{ file }}"
+{% endfor %}"""
+
+[plugins.zsh-defer]
+github = "romkatv/zsh-defer"
+apply = ["source"]
+
+[plugins.zsh-vi-mode]
+github = "jeffreytse/zsh-vi-mode"
+
+[plugins.zsh-autosuggestions]
+github = "zsh-users/zsh-autosuggestions"
+
+[plugins.fzf-tab]
+github = "Aloxaf/fzf-tab"
+apply = ["defer"]
+
+[plugins.zsh-autopair]
+github = "hlissner/zsh-autopair"
+apply = ["defer"]
+
+[plugins.zsh-completions]
+github = "zsh-users/zsh-completions"
+apply = ["defer"]
+
+[plugins.zsh-syntax-highlighting]
+github = "zsh-users/zsh-syntax-highlighting"
+apply = ["defer"]
+
+[plugins.zsh-history-substring-search]
+github = "zsh-users/zsh-history-substring-search"
+apply = ["defer"]
+
+[plugins.history-search-multi-word]
+github = "zdharma-continuum/history-search-multi-word"
+apply = ["defer"]
+
+
+# pnpm completions (deferred, needs compinit first)
+[plugins.pnpm-no-aliases]
+inline = 'export ZSH_PNPM_NO_ALIASES="true"'
+
+[plugins.zsh-pnpm-completions]
+github = "michakfromparis/zsh-pnpm-completions"
+apply = ["defer"]
+
+# Override pnpm script completion (must run after zsh-pnpm-completions)
+[plugins.pnpm-scripts-override]
+inline = 'zsh-defer source "$HOME/.config/zsh/pnpm-scripts-override.zsh"'
+
+# Deferred keybindings
+[plugins.deferred-keybindings]
+inline = """
+zsh-defer -c '
+  bindkey "^[[A" history-substring-search-up
+  bindkey "^[[B" history-substring-search-down
+  bindkey "^p" history-search-backward
+  bindkey "^n" history-search-forward
+'
+"""
