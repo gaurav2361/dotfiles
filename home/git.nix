@@ -10,17 +10,18 @@
     gitoxide
     git-open
   ];
+
   programs.git = {
     enable = true;
+    includes = [
+      { path = "${config.home.homeDirectory}/dotfiles/config/git/config"; }
+    ];
   };
-
-  # home.file.".config/git" = {
-  #   recursive = true;
-  #   source = ../config/git;
-  # };
-
-  home.file.".config/git".source = builtins.toString (
-    config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/config/git"
+  home.file.".config/git/ignore".source = builtins.toString (
+    config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/config/git/gitignore"
+  );
+  home.file.".config/git/template".source = builtins.toString (
+    config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/config/git/template"
   );
 
 }

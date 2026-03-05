@@ -30,4 +30,9 @@
   editors = {
     neovim.enable = true;
   };
+
+  # Disable manual generation to avoid options.json warning
+  manual.manpages.enable = false;
+  manual.json.enable = false;
+  manual.html.enable = false;
 }
