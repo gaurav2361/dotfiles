@@ -142,6 +142,7 @@
     taps = [
       "homebrew/core"
       "homebrew/cask"
+      "mhaeuser/mhaeuser"
     ];
 
     casks = [
