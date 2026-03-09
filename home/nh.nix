@@ -1,15 +1,26 @@
 {
   config,
   pkgs,
+  lib,
   ...
 }:
+with lib;
+let
+  cfg = config.cli.nh;
+in
 {
-  programs.nh = {
-    enable = true;
-    clean = {
+  options.cli.nh = {
+    enable = lib.mkEnableOption "Zed Editor with custom dotfiles symlink";
+  };
+
+  config = lib.mkIf cfg.enable {
+    programs.nh = {
       enable = true;
-      extraArgs = "--keep-since 7d --keep 3";
+      clean = {
+        enable = true;
+        extraArgs = "--keep-since 7d --keep 3";
+      };
+      flake = "${config.home.homeDirectory}/dotfiles";
     };
-    flake = "${config.home.homeDirectory}/dotfiles";
   };
 }

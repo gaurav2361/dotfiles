@@ -5,10 +5,10 @@
   ...
 }:
 let
-  cfg = config.terminal.starship;
+  cfg = config.cli.starship;
 in
 {
-  options.terminal.starship = {
+  options.cli.starship = {
     enable = lib.mkEnableOption "starship with custom dotfiles symlink";
   };
   config = lib.mkIf cfg.enable {

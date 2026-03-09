@@ -4,7 +4,7 @@
   pkgs,
   ...
 }:
-
+with lib;
 let
   cfg = config.lang.zig;
 in

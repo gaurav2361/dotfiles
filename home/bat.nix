@@ -1,23 +1,28 @@
 {
   pkgs,
   lib,
+  config,
   ...
 }:
+with lib;
+let
+  cfg = config.cli.bat;
+in
 {
-  programs.bat = {
-    enable = true;
-    # extraPackages = with pkgs.bat-extras; [
-    #   batman
-    #   batpipe
-    #   batgrep
-    # ];
+  options.cli.bat = {
+    enable = lib.mkEnableOption "Bat cat clone with syntax highlighting";
   };
-  home.file.".config/bat" = {
-    recursive = true;
-    source = ../config/bat;
-  };
-  home.sessionVariables = {
-    MANPAGER = "sh -c 'col -bx | bat -l man -p'";
-    MANROFFOPT = "-c";
+  config = lib.mkIf cfg.enable {
+    programs.bat = {
+      enable = true;
+    };
+    home.file.".config/bat" = {
+      recursive = true;
+      source = ../config/bat;
+    };
+    home.sessionVariables = {
+      MANPAGER = "sh -c 'col -bx | bat -l man -p'";
+      MANROFFOPT = "-c";
+    };
   };
 }

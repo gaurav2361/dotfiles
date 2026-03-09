@@ -4,6 +4,7 @@
   lib,
   ...
 }:
+with lib;
 let
   cfg = config.editors.neovim;
   inherit (pkgs)

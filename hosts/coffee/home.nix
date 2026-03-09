@@ -24,6 +24,25 @@
     neovim.enable = true;
     zed.enable = true;
   };
+  cli = {
+    atuin.enable = true;
+    bat.enable = true;
+    tmux.enable = true;
+    direnv.enable = true;
+    starship.enable = true;
+    nh.enable = true;
+    btop.enable = true;
+    git.enable = true;
+    lazygit.enable = true;
+    gh.enable = true;
+    jujutsu.enable = true;
+    fastfetch.enable = true;
+  };
+  shell.zsh.enable = true;
+  wm.aerospace.enable = true;
+  media.mpv.enable = true;
+  media.spicetify.enable = true;
+  terminal.ghostty.enable = true;
 
   # These MUST be set for Darwin
   home.username = "gaurav";
