@@ -1,6 +1,15 @@
-{ self, ... }:
+{ self, config, lib, ... }:
+with lib;
+let
+  cfg = config.modules.darwin.settings;
+in
 {
-  # touch ID for sudo
+  options.modules.darwin.settings = {
+    enable = mkEnableOption "macOS system defaults and UI settings";
+  };
+
+  config = mkIf cfg.enable {
+    # touch ID for sudo
   # security.pam.services.sudo_local.touchIdAuth = true;
   security.pam.services.sudo_local = {
     touchIdAuth = true;
@@ -75,5 +84,6 @@
     };
   };
 
-  system.stateVersion = 6;
+    system.stateVersion = 6;
+  };
 }

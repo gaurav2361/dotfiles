@@ -70,9 +70,9 @@
   # Define a user account. Don't forget to set a password with 'passwd'.
   users = {
     defaultUserShell = pkgs.zsh;
-    users.indie = {
+    users.gaurav = {
       isNormalUser = true;
-      description = "indiefluence server";
+      description = "gaurav server";
       extraGroups = [
         "networkmanager"
         "wheel"
@@ -88,7 +88,7 @@
 
   # Disable automatic login for security (recommended for servers)
   services.displayManager.autoLogin.enable = false;
-  # services.displayManager.autoLogin.user = "indie";
+  # services.displayManager.autoLogin.user = "gaurav";
 
   nixpkgs.config.allowUnfree = true;
   system.stateVersion = "25.05";

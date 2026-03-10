@@ -10,6 +10,7 @@
     ./settings.nix
     ./packages.nix
     ./fonts.nix
+    ./determinateNix.nix
     ./nix.nix
   ];
 }

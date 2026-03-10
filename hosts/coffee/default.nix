@@ -16,6 +16,13 @@
   system.primaryUser = "gaurav";
 
   nixpkgs.config.allowBroken = true;
+  modules.darwin = {
+    homebrew.enable = true;
+    settings.enable = true;
+    packages.enable = true;
+    fonts.enable = true;
+    determinateNix.enable = true;
+  };
 
   environment.systemPackages = with pkgs; [
     darwin.cctools

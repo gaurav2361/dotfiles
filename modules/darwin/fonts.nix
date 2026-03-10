@@ -1,6 +1,15 @@
-{ pkgs, ... }:
+{ pkgs, config, lib, ... }:
+with lib;
+let
+  cfg = config.modules.darwin.fonts;
+in
 {
-  fonts = {
+  options.modules.darwin.fonts = {
+    enable = mkEnableOption "macOS system fonts configuration";
+  };
+
+  config = mkIf cfg.enable {
+    fonts = {
     packages = with pkgs; [
       roboto
       work-sans
@@ -13,6 +22,7 @@
       nerd-fonts.zed-mono
     ];
 
-    # enableDefaultPackages = false;
+      # enableDefaultPackages = false;
+    };
   };
 }

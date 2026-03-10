@@ -126,7 +126,7 @@
             {
               home-manager.useGlobalPkgs = false;
               home-manager.useUserPackages = true;
-              home-manager.users.hades = import ./hosts/hades/home.nix;
+              home-manager.users.gaurav = import ./hosts/hades/home.nix;
               home-manager.extraSpecialArgs = { inherit inputs; };
               home-manager.backupFileExtension = "backup";
             }
@@ -186,14 +186,14 @@
           ];
         };
 
-        "indie@hades" = home-manager.lib.homeManagerConfiguration {
+        "gaurav@hades" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.x86_64-linux;
           extraSpecialArgs = { inherit inputs self; };
           modules = [
             ./hosts/hades/home.nix
             {
-              home.username = "indie";
-              home.homeDirectory = "/home/indie";
+              home.username = "gaurav";
+              home.homeDirectory = "/home/gaurav";
             }
           ];
         };

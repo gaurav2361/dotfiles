@@ -3,12 +3,22 @@
   config,
   pkgs,
   inputs,
+  lib,
   ...
 }:
+with lib;
+let
+  cfg = config.modules.darwin.homebrew;
+in
 {
   imports = [ inputs.nix-homebrew.darwinModules.nix-homebrew ];
 
-  environment.systemPackages = with pkgs; [
+  options.modules.darwin.homebrew = {
+    enable = mkEnableOption "macOS Homebrew package manager setup";
+  };
+
+  config = mkIf cfg.enable {
+    environment.systemPackages = with pkgs; [
     pkg-config
   ];
 
@@ -191,4 +201,5 @@
       # Use `mas search "app name"` to find IDs
     };
   };
+};
 }

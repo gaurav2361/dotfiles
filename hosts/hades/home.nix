@@ -13,8 +13,8 @@
     ../../home/gh.nix
   ];
 
-  home.username = "indie";
-  home.homeDirectory = "/home/indie";
+  home.username = "gaurav";
+  home.homeDirectory = "/home/gaurav";
 
   home.packages = [ ];
   home.file = { };
