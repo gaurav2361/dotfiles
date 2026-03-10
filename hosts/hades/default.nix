@@ -10,8 +10,7 @@
     ./hardware-configuration.nix
     ./disko-config.nix
     ../../home/docker.nix
-    ../../modules/common
-    ../../modules/nixos/nix.nix
+    ../../modules
   ];
 
   # Bootloader.
@@ -92,4 +91,11 @@
 
   nixpkgs.config.allowUnfree = true;
   system.stateVersion = "25.05";
+
+  modules = {
+    common.packages.enable = true;
+    nixos = {
+      nix.enable = true;
+    };
+  };
 }

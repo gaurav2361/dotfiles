@@ -7,20 +7,22 @@
 }:
 {
   imports = [
-    ../../modules/darwin
-    ../../modules/common
+    ../../modules
   ];
 
   ids.gids.nixbld = 350;
   networking.hostName = "coffee";
   system.primaryUser = "gaurav";
 
-  modules.darwin = {
-    homebrew.enable = true;
-    settings.enable = true;
-    packages.enable = true;
-    fonts.enable = true;
-    determinateNix.enable = true;
+  modules = {
+    common.packages.enable = true;
+    darwin = {
+      homebrew.enable = true;
+      settings.enable = true;
+      packages.enable = true;
+      fonts.enable = true;
+      determinateNix.enable = true;
+    };
   };
 
   environment.systemPackages = with pkgs; [

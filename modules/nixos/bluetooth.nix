@@ -1,10 +1,20 @@
 # Bluetooth configuration for NixOS
-{ pkgs, ... }:
+{ pkgs, config, lib, ... }:
+with lib;
+let
+  cfg = config.modules.nixos.bluetooth;
+in
 {
-  environment.systemPackages = with pkgs; [ blueman ];
-  hardware.bluetooth = {
-    enable = true;
-    powerOnBoot = true;
+  options.modules.nixos.bluetooth = {
+    enable = mkEnableOption "NixOS Bluetooth system";
   };
-  services.blueman.enable = true;
+
+  config = mkIf cfg.enable {
+    environment.systemPackages = with pkgs; [ blueman ];
+    hardware.bluetooth = {
+      enable = true;
+      powerOnBoot = true;
+    };
+    services.blueman.enable = true;
+  };
 }

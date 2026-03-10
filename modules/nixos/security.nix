@@ -1,13 +1,23 @@
-{ config, ... }:
+{ config, lib, ... }:
+with lib;
+let
+  cfg = config.modules.nixos.security;
+in
 {
-  security = {
-    # allow wayland lockers to unlock the screen
-    pam.services.hyprlock.text = "auth include login";
+  options.modules.nixos.security = {
+    enable = mkEnableOption "NixOS basic security settings";
+  };
 
-    # userland niceness
-    rtkit.enable = true;
+  config = mkIf cfg.enable {
+    security = {
+      # allow wayland lockers to unlock the screen
+      pam.services.hyprlock.text = "auth include login";
 
-    # don't ask for password for wheel group
-    # sudo.wheelNeedsPassword = false;
+      # userland niceness
+      rtkit.enable = true;
+
+      # don't ask for password for wheel group
+      # sudo.wheelNeedsPassword = false;
+    };
   };
 }

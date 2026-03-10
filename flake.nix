@@ -89,7 +89,11 @@
       nixosConfigurations = {
         atlas = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
-          specialArgs = { inherit inputs self; };
+          specialArgs = {
+            inherit inputs self;
+            isNixOS = true;
+            isDarwin = false;
+          };
           modules = [
             ./hosts/atlas/default.nix
             {
@@ -111,7 +115,11 @@
 
         hades = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
-          specialArgs = { inherit inputs self; };
+          specialArgs = {
+            inherit inputs self;
+            isNixOS = true;
+            isDarwin = false;
+          };
           modules = [
             disko.nixosModules.disko
             ./hosts/hades/default.nix
@@ -136,7 +144,11 @@
 
       darwinConfigurations.coffee = nix-darwin.lib.darwinSystem {
         system = "aarch64-darwin";
-        specialArgs = { inherit inputs self; };
+        specialArgs = {
+          inherit inputs self;
+          isDarwin = true;
+          isNixOS = false;
+        };
         modules = [
           ./hosts/coffee/default.nix
           {

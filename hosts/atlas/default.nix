@@ -8,15 +8,7 @@
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
-    ../../modules/nixos/fonts.nix
-    ../../modules/nixos/nixld.nix
-    ../../modules/nixos/nix.nix
-    ../../modules/nixos/locale.nix
-    ../../modules/nixos/audio.nix
-    ../../modules/nixos/bluetooth.nix
-    ../../modules/nixos/desktop/hyprland.nix
-    ../../modules/nixos/nvidia.nix
-    ../../modules/common
+    ../../modules
     ../../home/docker.nix
   ];
 
@@ -63,4 +55,18 @@
   services.displayManager.autoLogin.user = "gaurav";
   nixpkgs.config.allowUnfree = true;
   system.stateVersion = "25.05"; # Did you read the comment?
+
+  modules = {
+    common.packages.enable = true;
+    nixos = {
+      fonts.enable = true;
+      nixld.enable = true;
+      nix.enable = true;
+      locale.enable = true;
+      audio.enable = true;
+      bluetooth.enable = true;
+      nvidia.enable = true;
+      desktop.hyprland.enable = true;
+    };
+  };
 }
