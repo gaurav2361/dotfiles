@@ -7,36 +7,14 @@
 with lib;
 let
   cfg = config.editors.neovim;
-  inherit (pkgs)
-    tree-sitter
-    lua54Packages
-    luajitPackages
-    nodePackages_latest
-    vimPlugins
-    ;
-  inherit (pkgs.tree-sitter-grammars)
-    tree-sitter-lua
-    tree-sitter-nix
-    tree-sitter-go
-    tree-sitter-python
-    tree-sitter-bash
-    tree-sitter-regex
-    tree-sitter-markdown
-    tree-sitter-json
-    ;
-
-  python313Env = pkgs.python313.withPackages (
-    ps: with ps; [
-      pynvim
-      pip
-    ]
-  );
 in
 {
   options.editors.neovim = {
     enable = lib.mkEnableOption "Nvim Editor with custom dotfiles symlink";
   };
+
   config = lib.mkIf cfg.enable {
+    # Optional: Keep here if you want these available in your general terminal CLI
     home.packages = with pkgs; [
       nixfmt
       statix
@@ -44,7 +22,15 @@ in
 
     programs.neovim = {
       enable = true;
-      withPython3 = false;
+
+      # Cleaner, native Nix way to provide Python to Neovim
+      withPython3 = true;
+      extraPython3Packages =
+        ps: with ps; [
+          pynvim
+          pip
+        ];
+
       extraPackages = with pkgs; [
         tree-sitter
         lua54Packages.jsregexp
@@ -61,29 +47,29 @@ in
         luajitPackages.jsregexp
         lua51Packages.luarocks-nix
         luarocks
+
+        # LSPs and Formatters
         nixd
-        nixfmt
-        statix
         selene
-        gnumake
-        go
-        gcc
-        # phpPackages.composer
         biome
-        python313Env
         uv
         gopls
         gofumpt
         stylua
+        rustfmt
+        harper
+
+        # Compilers and Core Tools
+        gnumake
+        go
+        gcc
         cargo
-        wordnet
         rustc
         rustup
-        rustfmt
         ripgrep
+        wordnet
         imagemagick
         libiconv
-        harper
       ];
 
       extraWrapperArgs = [
@@ -94,10 +80,12 @@ in
       ];
 
       plugins = [
-        vimPlugins.nvim-treesitter.withAllGrammars
+        # This already pulls in all grammars, making individual grammar declarations unnecessary
+        pkgs.vimPlugins.nvim-treesitter.withAllGrammars
       ];
     };
 
+    # Links to your live dotfiles repo for instant Lua editing
     home.file.".config/nvim".source = builtins.toString (
       config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/config/nvim"
     );
