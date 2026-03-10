@@ -15,7 +15,6 @@
   networking.hostName = "coffee";
   system.primaryUser = "gaurav";
 
-  nixpkgs.config.allowBroken = true;
   modules.darwin = {
     homebrew.enable = true;
     settings.enable = true;
