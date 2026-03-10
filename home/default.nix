@@ -13,10 +13,7 @@
     ./starship.nix
     ./nh.nix
     ./btop.nix
-    ./git.nix
-    ./lazygit.nix
-    ./gh.nix
-    ./jujutsu.nix
+    ./git
     ./lazydocker.nix
     ./fastfetch.nix
     ./bat.nix

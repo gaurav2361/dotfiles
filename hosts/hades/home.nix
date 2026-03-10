@@ -6,12 +6,12 @@
 }:
 {
   imports = [
-    # Comment out git for now to test
-    # ../../home/git.nix
+    ../../home/git
     ../../home/nh.nix
     ../../home/lazydocker.nix
-    ../../home/gh.nix
   ];
+
+  versionControl.git.enable = true;
 
   home.username = "gaurav";
   home.homeDirectory = "/home/gaurav";

@@ -15,15 +15,13 @@
     ../../home/starship.nix
     ../../home/nh.nix
     ../../home/btop.nix
-    ../../home/git.nix
-    ../../home/lazygit.nix
+    ../../home/git
     ../../home/lazydocker.nix
     ../../home/editor/neovim.nix
     ../../home/editor/vscode.nix
     ../../home/editor/zed.nix
     ../../home/fastfetch.nix
     ../../home/bat.nix
-    ../../home/gh.nix
     ../../home/hyprland
     ../../home/waybar
     ../../home/spicetify.nix
@@ -33,6 +31,8 @@
 
     ./secrets
   ];
+
+  versionControl.git.enable = true;
 
   home.username = "gaurav";
   home.homeDirectory = "/home/gaurav";

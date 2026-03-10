@@ -6,11 +6,15 @@
 }:
 with lib;
 let
-  cfg = config.cli.gh;
+  cfg = config.versionControl.git.gh;
 in
 {
-  options.cli.gh = {
-    enable = lib.mkEnableOption "GitHub CLI tool (gh)";
+  options.versionControl.git.gh = {
+    enable = lib.mkOption {
+      type = lib.types.bool;
+      default = config.versionControl.git.enable;
+      description = "Enable GitHub CLI tool (gh)";
+    };
   };
 
   config = lib.mkIf cfg.enable {

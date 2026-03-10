@@ -6,10 +6,16 @@
 }:
 with lib;
 let
-  cfg = config.cli.git;
+  cfg = config.versionControl.git;
 in
 {
-  options.cli.git = {
+  imports = [
+    ./gh.nix
+    ./jujutsu.nix
+    ./lazygit.nix
+  ];
+
+  options.versionControl.git = {
     enable = lib.mkEnableOption "Git version control system";
   };
 

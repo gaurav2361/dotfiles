@@ -32,11 +32,11 @@
     starship.enable = true;
     nh.enable = true;
     btop.enable = true;
-    git.enable = true;
-    lazygit.enable = true;
-    gh.enable = true;
-    jujutsu.enable = true;
     fastfetch.enable = true;
+  };
+
+  versionControl.git = {
+    enable = true;
   };
   shell.zsh.enable = true;
   wm.aerospace.enable = true;
