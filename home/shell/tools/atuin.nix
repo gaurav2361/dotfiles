@@ -6,10 +6,10 @@
 }:
 with lib;
 let
-  cfg = config.cli.atuin;
+  cfg = config.shell.tools.atuin;
 in
 {
-  options.cli.atuin = {
+  options.shell.tools.atuin = {
     enable = lib.mkEnableOption "Atuin shell history sync";
   };
   config = lib.mkIf cfg.enable {
@@ -34,7 +34,7 @@ in
       # };
     };
     home.file.".config/atuin/config.toml" = {
-      source = ../config/atuin/config.toml;
+      source = ../../../config/atuin/config.toml;
     };
   };
 }

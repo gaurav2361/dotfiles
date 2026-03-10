@@ -4,7 +4,9 @@
   config,
   ...
 }:
+with lib;
 let
+  cfg = config.shell.nushell;
   nu-scripts = pkgs.fetchFromGitHub {
     owner = "nushell";
     repo = "nu_scripts";
@@ -13,6 +15,11 @@ let
   };
 in
 {
+  options.shell.nushell = {
+    enable = lib.mkEnableOption "Nushell terminal environment";
+  };
+
+  config = lib.mkIf cfg.enable {
   home.packages = with pkgs; [
     # Core utilities
     bat
@@ -59,7 +66,7 @@ in
   # Copy entire nushell config directory to ~/.config/nushell
   home.file.".config/nushell" = {
     recursive = true;
-    source = ../config/nushell;
+    source = ../../config/nushell;
   };
 
   # CRITICAL: Set these environment variables so nushell uses .config/nushell
@@ -69,7 +76,7 @@ in
     # NU_PLUGIN_DIRS = "${config.home.homeDirectory}/.config/nushell/plugins:/run/current-system/sw/bin";
     # XDG_CACHE_HOME  = "$HOME/.cache";
     # XDG_CONFIG_HOME = "$HOME/.config";
-    # XDG_DATA_HOME   = "$HOME/.local/share";
     # XDG_BIN_HOME    = "$HOME/.local/bin";
   };
+ };
 }

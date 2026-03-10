@@ -6,10 +6,10 @@
 }:
 with lib;
 let
-  cfg = config.cli.fastfetch;
+  cfg = config.shell.tools.fastfetch;
 in
 {
-  options.cli.fastfetch = {
+  options.shell.tools.fastfetch = {
     enable = lib.mkEnableOption "Fastfetch system information tool";
   };
 

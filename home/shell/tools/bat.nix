@@ -6,10 +6,10 @@
 }:
 with lib;
 let
-  cfg = config.cli.bat;
+  cfg = config.shell.tools.bat;
 in
 {
-  options.cli.bat = {
+  options.shell.tools.bat = {
     enable = lib.mkEnableOption "Bat cat clone with syntax highlighting";
   };
   config = lib.mkIf cfg.enable {
@@ -18,7 +18,7 @@ in
     };
     home.file.".config/bat" = {
       recursive = true;
-      source = ../config/bat;
+      source = ../../../config/bat;
     };
     home.sessionVariables = {
       MANPAGER = "sh -c 'col -bx | bat -l man -p'";

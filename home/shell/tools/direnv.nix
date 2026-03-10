@@ -6,10 +6,10 @@
 }:
 with lib;
 let
-  cfg = config.cli.direnv;
+  cfg = config.shell.tools.direnv;
 in
 {
-  options.cli.direnv = {
+  options.shell.tools.direnv = {
     enable = lib.mkEnableOption "direnv environment switcher";
   };
   config = lib.mkIf cfg.enable {

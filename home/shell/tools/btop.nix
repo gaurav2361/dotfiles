@@ -6,10 +6,10 @@
 }:
 with lib;
 let
-  cfg = config.cli.btop;
+  cfg = config.shell.tools.btop;
 in
 {
-  options.cli.btop = {
+  options.shell.tools.btop = {
     enable = lib.mkEnableOption "Btop";
   };
   config = lib.mkIf cfg.enable {
@@ -19,7 +19,7 @@ in
     };
     home.file.".config/btop" = {
       recursive = true;
-      source = ../config/btop;
+      source = ../../../config/btop;
     };
   };
 }

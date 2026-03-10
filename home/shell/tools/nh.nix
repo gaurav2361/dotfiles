@@ -6,11 +6,11 @@
 }:
 with lib;
 let
-  cfg = config.cli.nh;
+  cfg = config.shell.tools.nh;
 in
 {
-  options.cli.nh = {
-    enable = lib.mkEnableOption "Zed Editor with custom dotfiles symlink";
+  options.shell.tools.nh = {
+    enable = lib.mkEnableOption "nh Nix helper tools";
   };
 
   config = lib.mkIf cfg.enable {

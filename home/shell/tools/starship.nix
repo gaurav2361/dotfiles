@@ -5,17 +5,17 @@
   ...
 }:
 let
-  cfg = config.cli.starship;
+  cfg = config.shell.tools.starship;
 in
 {
-  options.cli.starship = {
+  options.shell.tools.starship = {
     enable = lib.mkEnableOption "starship with custom dotfiles symlink";
   };
   config = lib.mkIf cfg.enable {
 
     programs.starship = {
       enable = true;
-      settings = pkgs.lib.importTOML ../config/starship.toml;
+      settings = pkgs.lib.importTOML ../../../config/starship.toml;
     };
   };
 }

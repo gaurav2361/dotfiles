@@ -8,20 +8,9 @@
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
   imports = [
-    ../../home/tmux.nix
-    ../../home/zsh.nix
-    ../../home/zen
-    ../../home/direnv.nix
-    ../../home/starship.nix
-    ../../home/nh.nix
-    ../../home/btop.nix
+    ../../home/shell
     ../../home/git
-    ../../home/lazydocker.nix
-    ../../home/editor/neovim.nix
-    ../../home/editor/vscode.nix
-    ../../home/editor/zed.nix
-    ../../home/fastfetch.nix
-    ../../home/bat.nix
+    ../../home/editor
     ../../home/hyprland
     ../../home/waybar
     ../../home/spicetify.nix
@@ -33,6 +22,18 @@
   ];
 
   versionControl.git.enable = true;
+  shell = {
+    zsh.enable = true;
+    tools = {
+      starship.enable = true;
+      direnv.enable = true;
+      fastfetch.enable = true;
+      bat.enable = true;
+    };
+  };
+  editors = {
+    neovim.enable = true;
+  };
 
   home.username = "gaurav";
   home.homeDirectory = "/home/gaurav";

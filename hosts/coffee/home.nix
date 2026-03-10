@@ -5,53 +5,63 @@
   ...
 }:
 {
+
   home.packages = with pkgs; [
     spotiflac
     spotidownloader
   ];
+
   imports = [
     ../../home
     ./secrets
   ];
 
   lang = {
+    zig.enable = true;
     rust.enable = true;
     node.enable = true;
-    zig.enable = true;
     python.enable = true;
   };
+
   editors = {
-    neovim.enable = true;
     zed.enable = true;
-  };
-  cli = {
-    atuin.enable = true;
-    bat.enable = true;
-    tmux.enable = true;
-    direnv.enable = true;
-    starship.enable = true;
-    nh.enable = true;
-    btop.enable = true;
-    fastfetch.enable = true;
+    neovim.enable = true;
   };
 
-  versionControl.git = {
-    enable = true;
+  cli = {
+    tmux.enable = true;
   };
-  shell.zsh.enable = true;
+
+  shell = {
+    zsh.enable = true;
+    tools = {
+      nh.enable = true;
+      bat.enable = true;
+      btop.enable = true;
+      atuin.enable = true;
+      direnv.enable = true;
+      starship.enable = false;
+      fastfetch.enable = true;
+    };
+  };
+
+  media = {
+    mpv.enable = true;
+    spicetify.enable = true;
+  };
+
+  versionControl.git.enable = true;
+
   wm.aerospace.enable = true;
-  media.mpv.enable = true;
-  media.spicetify.enable = true;
+
   terminal.ghostty.enable = true;
 
-  # These MUST be set for Darwin
   home.username = "gaurav";
   home.homeDirectory = "/Users/gaurav";
 
-  # Disable XDG on macOS
   xdg.userDirs.enable = false;
 
-  # Create directories manually instead
+  # Create directories
   home.activation.createCustomDirs = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     $DRY_RUN_CMD mkdir -p "$HOME/.config/sops/age"
     $DRY_RUN_CMD mkdir -p "$HOME/personal"

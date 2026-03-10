@@ -12,9 +12,6 @@ in
   options.shell.zsh = {
     enable = lib.mkEnableOption "Zsh shell environment";
   };
-  imports = [
-    ./eza.nix
-  ];
 
   config = lib.mkIf cfg.enable {
     home.packages = with pkgs; [

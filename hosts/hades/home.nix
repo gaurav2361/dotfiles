@@ -6,12 +6,12 @@
 }:
 {
   imports = [
-    ../../home/git
-    ../../home/nh.nix
-    ../../home/lazydocker.nix
+    ../../home
   ];
 
   versionControl.git.enable = true;
+  cli.lazydocker.enable = true;
+  shell.tools.nh.enable = true;
 
   home.username = "gaurav";
   home.homeDirectory = "/home/gaurav";
