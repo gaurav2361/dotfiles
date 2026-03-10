@@ -10,7 +10,11 @@ let
 in
 {
   options.shell.tools.btop = {
-    enable = lib.mkEnableOption "Btop";
+    enable = lib.mkOption {
+      type = lib.types.bool;
+      default = config.shell.tools.enable;
+      description = "Btop system monitor";
+    };
   };
   config = lib.mkIf cfg.enable {
     programs.btop = {

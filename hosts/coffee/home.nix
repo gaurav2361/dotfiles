@@ -35,9 +35,8 @@
   shell = {
     zsh.enable = true;
     tools = {
-      nh.enable = true;
+      enable = true;
       bat.enable = true;
-      btop.enable = true;
       atuin.enable = true;
       direnv.enable = true;
       starship.enable = false;

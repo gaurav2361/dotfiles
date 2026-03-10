@@ -10,7 +10,11 @@ let
 in
 {
   options.shell.tools.nh = {
-    enable = lib.mkEnableOption "nh Nix helper tools";
+    enable = lib.mkOption {
+      type = lib.types.bool;
+      default = config.shell.tools.enable;
+      description = "nh Nix helper tools";
+    };
   };
 
   config = lib.mkIf cfg.enable {

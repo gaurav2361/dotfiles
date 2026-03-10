@@ -10,7 +10,11 @@ let
 in
 {
   options.shell.tools.eza = {
-    enable = lib.mkEnableOption "eza replacement for ls";
+    enable = lib.mkOption {
+      type = lib.types.bool;
+      default = config.shell.tools.enable;
+      description = "eza replacement for ls";
+    };
   };
 
   config = lib.mkIf cfg.enable {

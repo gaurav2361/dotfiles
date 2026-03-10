@@ -25,6 +25,7 @@
   shell = {
     zsh.enable = true;
     tools = {
+      enable = true; # default tools (nh, btop, eza)
       starship.enable = true;
       direnv.enable = true;
       fastfetch.enable = true;

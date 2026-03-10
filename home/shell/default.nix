@@ -1,5 +1,13 @@
-{ ... }:
+{ lib, config, ... }:
+with lib;
+let
+  cfg = config.shell.tools;
+in
 {
+  options.shell.tools = {
+    enable = lib.mkEnableOption "Shell tools ecosystem";
+  };
+
   imports = [
     ./nushell.nix
     ./zsh.nix

@@ -11,7 +11,7 @@
 
   versionControl.git.enable = true;
   cli.lazydocker.enable = true;
-  shell.tools.nh.enable = true;
+  shell.tools.enable = true;
 
   home.username = "gaurav";
   home.homeDirectory = "/home/gaurav";
