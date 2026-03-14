@@ -39,7 +39,6 @@
       bat.enable = true;
       atuin.enable = true;
       direnv.enable = true;
-      starship.enable = false;
       fastfetch.enable = true;
     };
   };
