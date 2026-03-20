@@ -1,5 +1,10 @@
 # Bluetooth configuration for NixOS
-{ pkgs, config, lib, ... }:
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
 with lib;
 let
   cfg = config.modules.nixos.bluetooth;

@@ -5,10 +5,9 @@
   ...
 }:
 {
-  imports =
-    [
-      ./common
-    ]
-    ++ lib.optional isDarwin ./darwin
-    ++ lib.optional isNixOS ./nixos;
+  imports = [
+    ./common
+  ]
+  ++ lib.optional isDarwin ./darwin
+  ++ lib.optional isNixOS ./nixos;
 }

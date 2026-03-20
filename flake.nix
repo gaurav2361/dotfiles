@@ -37,7 +37,6 @@
       url = "github:BatteredBunny/brew-api";
       flake = false;
     };
-    nur.url = "github:nix-community/NUR";
     disko = {
       url = "github:nix-community/disko/latest";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -85,6 +84,10 @@
       overlays = import ./overlays { inherit inputs; };
     in
     {
+      formatter = {
+        "x86_64-linux" = nixpkgs.legacyPackages."x86_64-linux".nixfmt;
+        "aarch64-darwin" = nixpkgs.legacyPackages."aarch64-darwin".nixfmt;
+      };
       inherit overlays;
       nixosConfigurations = {
         atlas = nixpkgs.lib.nixosSystem {
