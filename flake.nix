@@ -64,6 +64,9 @@
       url = "https://flakehub.com/f/DeterminateSystems/determinate/3";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nh = {
+      url = "github:gaurav2361/nh";
+    };
   };
 
   outputs =

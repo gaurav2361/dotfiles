@@ -5,6 +5,8 @@
 
   # https://wiki.nixos.org/wiki/Overlays
   modifications = final: prev: {
+    nh = inputs.nh.packages.${final.stdenv.hostPlatform.system}.default;
+
     stable = import inputs.nixpkgs-stable {
       system = final.stdenv.hostPlatform.system;
       config.allowUnfree = true;
