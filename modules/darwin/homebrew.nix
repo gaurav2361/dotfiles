@@ -197,7 +197,7 @@ in
       # IMPORTANT: You must "Get" these apps in the Mac App Store at least once
       # to associate them with your Apple ID before they can be installed via mas
       masApps = {
-        # "WhatsApp Messenger" = 310633997;
+        "WhatsApp Messenger" = 310633997;
         # Add more apps here after obtaining them in the App Store
         # Use `mas search "app name"` to find IDs
       };
