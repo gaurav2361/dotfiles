@@ -8,3 +8,5 @@ result-*
 
 [Bb]ackup
 [Bb]ackup/*
+.agents
+skills-lock.json
