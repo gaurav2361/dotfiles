@@ -3,7 +3,7 @@
   lib,
   ...
 }:
-lib.myModules.mkModule {
+lib.mkModule {
   name = "darwin.packages";
   description = "macOS system packages configuration";
   config = {

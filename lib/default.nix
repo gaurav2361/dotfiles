@@ -6,26 +6,29 @@ let
 in
 lib
 // {
-  # Renamed to avoid collision with lib.config and lib.modules
-  myLib = {
+  # Flake metadata and internal helpers
+  flake = {
     inherit (configHelper)
       systems
       forAllSystems
       standardOverlays
       overlays
-      mkNixosHost
-      mkDarwinHost
-      mkSystem
-      mkHomeConfig
       ;
   };
 
-  myModules = {
-    inherit (moduleHelper)
-      mkModule
-      mkBoolOpt
-      mkStrOpt
-      mkPkgOpt
-      ;
-  };
+  # Flattened Host Creation Helpers
+  inherit (configHelper)
+    mkNixosHost
+    mkDarwinHost
+    mkSystem
+    mkHomeConfig
+    ;
+
+  # Flattened Module Helpers
+  inherit (moduleHelper)
+    mkModule
+    mkBoolOpt
+    mkStrOpt
+    mkPkgOpt
+    ;
 }
