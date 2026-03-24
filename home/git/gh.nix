@@ -1,10 +1,10 @@
-{
+{ myLib, 
   pkgs,
   lib,
   config,
   ...
 }:
-lib.mkHomeModule {
+myLib.mkHomeModule {
   globalConfig = config;
   name = "versionControl.git.gh";
   description = "Enable GitHub CLI tool (gh)";

@@ -1,4 +1,4 @@
-{ lib, config, ... }:
+{ myLib,  lib, config, ... }:
 {
   imports = [
     ./nushell.nix
@@ -14,7 +14,7 @@
     ./tools/btop.nix
   ];
 }
-// lib.mkHomeModule {
+// myLib.mkHomeModule {
   globalConfig = config;
   name = "shell.tools";
   description = "Shell tools ecosystem";

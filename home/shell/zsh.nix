@@ -1,10 +1,10 @@
-{
+{ myLib, 
   config,
   pkgs,
   lib,
   ...
 }:
-lib.mkHomeModule {
+myLib.mkHomeModule {
   globalConfig = config;
   name = "shell.zsh";
   description = "Zsh shell environment";

@@ -1,4 +1,5 @@
 {
+  myLib,
   config,
   pkgs,
   lib,
@@ -16,7 +17,7 @@ let
     bacon # background checker
   ];
 in
-lib.mkHomeModule {
+myLib.mkHomeModule {
   globalConfig = config;
   name = "lang.rust";
   description = "Rust development environment";

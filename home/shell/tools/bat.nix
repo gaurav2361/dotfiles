@@ -1,10 +1,10 @@
-{
+{ myLib, 
   pkgs,
   lib,
   config,
   ...
 }:
-lib.mkHomeModule {
+myLib.mkHomeModule {
   globalConfig = config;
   name = "shell.tools.bat";
   description = "Bat cat clone with syntax highlighting";

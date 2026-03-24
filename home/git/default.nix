@@ -1,4 +1,4 @@
-{
+{ myLib, 
   config,
   pkgs,
   lib,
@@ -11,7 +11,7 @@
     ./lazygit.nix
   ];
 }
-// lib.mkHomeModule {
+// myLib.mkHomeModule {
   globalConfig = config;
   name = "versionControl.git";
   description = "Git version control system";

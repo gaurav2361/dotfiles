@@ -1,10 +1,10 @@
-{
+{ myLib, 
   config,
   pkgs,
   lib,
   ...
 }:
-lib.mkHomeModule {
+myLib.mkHomeModule {
   globalConfig = config;
   name = "editors.zed";
   description = "Zed Editor with custom dotfiles symlink";

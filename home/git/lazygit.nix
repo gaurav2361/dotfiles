@@ -1,10 +1,10 @@
-{
+{ myLib, 
   config,
   lib,
   pkgs,
   ...
 }:
-lib.mkHomeModule {
+myLib.mkHomeModule {
   globalConfig = config;
   name = "versionControl.git.lazygit";
   description = "Enable Lazygit terminal UI for Git";

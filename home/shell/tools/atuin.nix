@@ -1,10 +1,10 @@
-{
+{ myLib, 
   pkgs,
   lib,
   config,
   ...
 }:
-lib.mkHomeModule {
+myLib.mkHomeModule {
   globalConfig = config;
   name = "shell.tools.atuin";
   description = "Atuin shell history sync";

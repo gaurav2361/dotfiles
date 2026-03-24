@@ -1,10 +1,10 @@
-{
+{ myLib, 
   pkgs,
   config,
   lib,
   ...
 }:
-lib.mkHomeModule {
+myLib.mkHomeModule {
   globalConfig = config;
   name = "shell.tools.btop";
   description = "Btop system monitor";
