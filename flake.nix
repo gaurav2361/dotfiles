@@ -85,7 +85,7 @@
       inherit lib;
 
       # Standard formatter for all supported systems
-      formatter = lib.flake.forAllSystems (system: nixpkgs.legacyPackages.${system}.nixfmt-rfc-style);
+      formatter = lib.forAllSystems (system: nixpkgs.legacyPackages.${system}.nixfmt-rfc-style);
 
       # Common overlays
       inherit (lib.flake) overlays;
@@ -94,37 +94,38 @@
       nixosConfigurations = {
         atlas = lib.mkSystem {
           hostname = "atlas";
-          system = "x86_64-linux";
+          system = lib.systems.x86_64-linux;
         };
 
         hades = lib.mkSystem {
           hostname = "hades";
-          system = "x86_64-linux";
+          system = lib.systems.x86_64-linux;
           extraModules = [
             disko.nixosModules.disko
             ./hosts/hades/disko-config.nix
           ];
         };
+
       };
 
       darwinConfigurations.coffee = lib.mkSystem {
         hostname = "coffee";
-        system = "aarch64-darwin";
+        system = lib.systems.aarch64-darwin;
       };
 
       # Standalone Home Manager configurations
       homeConfigurations = {
         "gaurav@coffee" = lib.mkHomeConfig {
           hostname = "coffee";
-          system = "aarch64-darwin";
+          system = lib.systems.aarch64-darwin;
         };
         "gaurav@atlas" = lib.mkHomeConfig {
           hostname = "atlas";
-          system = "x86_64-linux";
+          system = lib.systems.x86_64-linux;
         };
         "gaurav@hades" = lib.mkHomeConfig {
           hostname = "hades";
-          system = "x86_64-linux";
+          system = lib.systems.x86_64-linux;
         };
       };
     };
