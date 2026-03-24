@@ -4,21 +4,11 @@
   pkgs,
   ...
 }:
-with lib;
-let
-  cfg = config.lang.zig;
-in
-{
-  options.lang.zig = {
-    enable = lib.mkOption {
-      type = lib.types.bool;
-      default = false;
-      description = "Enable Zig development environment";
-    };
-  };
-
-  config = lib.mkIf cfg.enable {
-    # Since programs.zig doesn't exist, we put the packages in home.packages
+lib.mkHomeModule {
+  globalConfig = config;
+  name = "lang.zig";
+  description = "Enable Zig development environment";
+  config = {
     home.packages = with pkgs; [
       zig # The compiler
       zls # The Language Server (LSP)

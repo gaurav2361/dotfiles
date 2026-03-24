@@ -1,4 +1,3 @@
-# Spicetify is a spotify client customizer
 {
   lib,
   config,
@@ -6,19 +5,13 @@
   pkgs,
   ...
 }:
-with lib;
-let
-  cfg = config.media.spicetify;
-in
 {
-  options.media.spicetify = {
-    enable = lib.mkEnableOption "Spicetify Spotify client customizer";
-  };
-
   imports = [ inputs.spicetify-nix.homeManagerModules.default ];
-
-  config = lib.mkIf cfg.enable {
-    # Spicetify-nix will install Spotify automatically on all platforms
+} // lib.mkHomeModule {
+  globalConfig = config;
+  name = "media.spicetify";
+  description = "Spicetify Spotify client customizer";
+  config = {
     home.packages = [ ];
 
     programs.spicetify =

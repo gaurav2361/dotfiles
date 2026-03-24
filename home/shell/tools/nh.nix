@@ -4,20 +4,12 @@
   lib,
   ...
 }:
-with lib;
-let
-  cfg = config.shell.tools.nh;
-in
-{
-  options.shell.tools.nh = {
-    enable = lib.mkOption {
-      type = lib.types.bool;
-      default = config.shell.tools.enable;
-      description = "nh Nix helper tools";
-    };
-  };
-
-  config = lib.mkIf cfg.enable {
+lib.mkHomeModule {
+  globalConfig = config;
+  name = "shell.tools.nh";
+  description = "nh Nix helper tools";
+  enableDefault = config.shell.tools.enable or false;
+  config = {
     programs.nh = {
       enable = true;
       clean = {

@@ -4,20 +4,12 @@
   pkgs,
   ...
 }:
-with lib;
-let
-  cfg = config.versionControl.git.jj;
-in
-{
-  options.versionControl.git.jj = {
-    enable = lib.mkOption {
-      type = lib.types.bool;
-      default = config.versionControl.git.enable;
-      description = "Enable Jujutsu (jj) version control system";
-    };
-  };
-
-  config = lib.mkIf cfg.enable {
+lib.mkHomeModule {
+  globalConfig = config;
+  name = "versionControl.git.jj";
+  description = "Enable Jujutsu (jj) version control system";
+  enableDefault = config.versionControl.git.enable;
+  config = {
     home.packages = with pkgs; [
       jujutsu
       jjui

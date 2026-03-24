@@ -4,15 +4,11 @@
   pkgs,
   ...
 }:
-let
-  cfg = config.shell.tools.starship;
-in
-{
-  options.shell.tools.starship = {
-    enable = lib.mkEnableOption "starship with custom dotfiles symlink";
-  };
-  config = lib.mkIf cfg.enable {
-
+lib.mkHomeModule {
+  globalConfig = config;
+  name = "shell.tools.starship";
+  description = "starship with custom dotfiles symlink";
+  config = {
     programs.starship = {
       enable = true;
       settings = pkgs.lib.importTOML ../../../config/starship.toml;

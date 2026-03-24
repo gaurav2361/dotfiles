@@ -26,6 +26,7 @@ lib // {
   # Flattened Module Helpers
   inherit (moduleHelper)
     mkModule
+    mkHomeModule
     mkBoolOpt
     mkStrOpt
     mkPkgOpt

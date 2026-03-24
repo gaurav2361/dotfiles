@@ -5,16 +5,11 @@
   pkgs,
   ...
 }:
-with lib;
-let
-  config_name = if pkgs.stdenv.isLinux then "linux-config" else "mac-config";
-  cfg = config.terminal.ghostty;
-in
-{
-  options.terminal.ghostty = {
-    enable = lib.mkEnableOption "ghostty terminal";
-  };
-  config = lib.mkIf cfg.enable {
+lib.mkHomeModule {
+  globalConfig = config;
+  name = "terminal.ghostty";
+  description = "ghostty terminal";
+  config = {
     home.packages =
       if pkgs.stdenv.isLinux then
         [ inputs.ghostty.packages."${pkgs.stdenv.hostPlatform.system}".default ]

@@ -4,16 +4,11 @@
   config,
   ...
 }:
-with lib;
-let
-  cfg = config.wm.aerospace;
-in
-{
-  options.wm.aerospace = {
-    enable = lib.mkEnableOption "AeroSpace macos tiling window manager";
-  };
-
-  config = lib.mkIf cfg.enable {
+lib.mkHomeModule {
+  globalConfig = config;
+  name = "wm.aerospace";
+  description = "AeroSpace macos tiling window manager";
+  config = {
     home.packages = with pkgs; [
       autoraise
     ];
@@ -22,8 +17,5 @@ in
       launchd.enable = true;
       settings = pkgs.lib.importTOML ../config/aerospace/aerospace.toml;
     };
-    # home.file.".config/aerospace/aerospace.toml" = {
-    #   source = ../config/aerospace/aerospace.toml;
-    # };
   };
 }

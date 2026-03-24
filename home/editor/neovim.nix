@@ -4,17 +4,11 @@
   lib,
   ...
 }:
-with lib;
-let
-  cfg = config.editors.neovim;
-in
-{
-  options.editors.neovim = {
-    enable = lib.mkEnableOption "Nvim Editor with custom dotfiles symlink";
-  };
-
-  config = lib.mkIf cfg.enable {
-    # Optional: Keep here if you want these available in your general terminal CLI
+lib.mkHomeModule {
+  globalConfig = config;
+  name = "editors.neovim";
+  description = "Nvim Editor with custom dotfiles symlink";
+  config = {
     home.packages = with pkgs; [
       nixfmt
       statix
@@ -22,8 +16,6 @@ in
 
     programs.neovim = {
       enable = true;
-
-      # Cleaner, native Nix way to provide Python to Neovim
       withPython3 = true;
       extraPython3Packages =
         ps: with ps; [
@@ -34,7 +26,6 @@ in
       extraPackages = with pkgs; [
         tree-sitter
         lua54Packages.jsregexp
-
         nodejs_22
         nodePackages_latest.vscode-json-languageserver
         vscode-langservers-extracted
@@ -47,8 +38,6 @@ in
         luajitPackages.jsregexp
         lua51Packages.luarocks-nix
         luarocks
-
-        # LSPs and Formatters
         nixd
         selene
         biome
@@ -58,8 +47,6 @@ in
         stylua
         rustfmt
         harper
-
-        # Compilers and Core Tools
         gnumake
         go
         gcc
@@ -80,12 +67,10 @@ in
       ];
 
       plugins = [
-        # This already pulls in all grammars, making individual grammar declarations unnecessary
         pkgs.vimPlugins.nvim-treesitter.withAllGrammars
       ];
     };
 
-    # Links to your live dotfiles repo for instant Lua editing
     home.file.".config/nvim".source = builtins.toString (
       config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/config/nvim"
     );
