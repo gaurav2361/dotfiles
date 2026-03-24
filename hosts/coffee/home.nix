@@ -49,6 +49,7 @@
   };
 
   versionControl.git.enable = true;
+  secrets.sops.enable = true;
 
   wm.aerospace.enable = true;
 

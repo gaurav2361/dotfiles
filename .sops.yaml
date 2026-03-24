@@ -3,7 +3,7 @@ keys:
     - &gaurav age1epwk66jtnh4vpg0eysfzpc8evyq4rx4ycyec37n9kgn88d8u7e4sfzvdfv
 
 creation_rules:
-  - path_regex: secrets/secrets.yaml$
+  - path_regex: (secrets|hosts)/.*\.yaml$
     key_groups:
       - age:
           - *gaurav

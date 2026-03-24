@@ -17,6 +17,7 @@
     ../../home/vicinae.nix
     ../../home/thunar.nix
     ../../home/ghostty.nix
+    ../../home/sops.nix
 
     ./secrets
   ];

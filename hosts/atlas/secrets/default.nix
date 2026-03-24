@@ -1,40 +1,37 @@
 # Those are my secrets, encrypted with sops
 # You shouldn't import this file, unless you edit it
 {
+  config,
   pkgs,
   inputs,
   ...
 }:
 {
-  imports = [ inputs.sops-nix.homeManagerModules.sops ];
-
-  sops = {
-    age.keyFile = "/home/gaurav/.config/sops/age/keys.txt";
-    # defaultSopsFile = ./secrets.yaml;
-    defaultSopsFile = ../../../secrets/secrets.yaml;
-    secrets = {
+  sops.secrets =
+    let
+      sshDir = "${config.home.homeDirectory}/.ssh";
+    in
+    {
       sshconfig = {
-        path = "/home/gaurav/.ssh/config";
+        path = "${sshDir}/config";
       };
       github-key = {
-        path = "/home/gaurav/.ssh/github";
+        path = "${sshDir}/github";
+        mode = "0600";
       };
       signing-key = {
-        path = "/home/gaurav/.ssh/key";
+        path = "${sshDir}/key";
+        mode = "0600";
       };
       signing-pub-key = {
-        path = "/home/gaurav/.ssh/key.pub";
+        path = "${sshDir}/key.pub";
       };
       allowed-signers = {
-        path = "/home/gaurav/.ssh/allowed_signers";
+        path = "${sshDir}/allowed_signers";
       };
     };
-  };
+
   systemd.user.services.mbsync.Unit.After = [ "sops-nix.service" ];
-  home.packages = with pkgs; [
-    sops
-    age
-  ];
 
   wayland.windowManager.hyprland.settings.exec-once = [ "systemctl --user start sops-nix" ];
 }

@@ -15,6 +15,7 @@
     ./aerospace.nix
     ./mpv.nix
     ./spicetify.nix
+    ./sops.nix
   ];
 
   editors = {

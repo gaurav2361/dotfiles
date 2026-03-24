@@ -5,39 +5,34 @@
   ...
 }:
 {
-  imports = [ inputs.sops-nix.homeManagerModules.sops ];
-
-  sops = {
-    age.keyFile = "/Users/gaurav/.config/sops/age/keys.txt";
-    defaultSopsFile = ../../../secrets/secrets.yaml;
-
-    secrets = {
+  sops.secrets =
+    let
+      sshDir = "${config.home.homeDirectory}/.ssh";
+    in
+    {
       sshconfig = {
-        path = "/Users/gaurav/.ssh/config";
+        path = "${sshDir}/config";
       };
       github-key = {
-        path = "/Users/gaurav/.ssh/github";
+        path = "${sshDir}/github";
+        mode = "0600";
       };
       signing-key = {
-        path = "/Users/gaurav/.ssh/key";
+        path = "${sshDir}/key";
+        mode = "0600";
       };
       signing-pub-key = {
-        path = "/Users/gaurav/.ssh/key.pub";
+        path = "${sshDir}/key.pub";
       };
       allowed-signers = {
-        path = "/Users/gaurav/.ssh/allowed_signers";
+        path = "${sshDir}/allowed_signers";
       };
       indiefluence-vps = {
-        path = "/Users/gaurav/.ssh/indiefluence_vps";
+        path = "${sshDir}/indiefluence_vps";
+        mode = "0600";
       };
       indiefluence-vps-pub = {
-        path = "/Users/gaurav/.ssh/indiefluence_vps.pub";
+        path = "${sshDir}/indiefluence_vps.pub";
       };
     };
-  };
-
-  home.packages = with pkgs; [
-    sops
-    age
-  ];
 }
