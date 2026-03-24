@@ -1,6 +1,11 @@
 { inputs }:
 let
-  inherit (inputs) self nixpkgs nix-darwin home-manager;
+  inherit (inputs)
+    self
+    nixpkgs
+    nix-darwin
+    home-manager
+    ;
   lib = nixpkgs.lib;
 
   # Define systems as an attrset for easy access
@@ -34,7 +39,7 @@ let
     };
 
 in
-{
+rec {
   inherit systems forAllSystems standardOverlays;
 
   overlays = import ../overlays { inherit inputs; };
@@ -45,8 +50,10 @@ in
       hostname,
       system ? systems.x86_64-linux,
       username ? "gaurav",
+      withHomeManager ? true,
       extraModules ? [ ],
       extraOverlays ? [ ],
+      ... # Ignore other flags
     }:
     lib.nixosSystem {
       inherit system;
@@ -60,6 +67,8 @@ in
       modules = [
         ../hosts/${hostname}/default.nix
         { nixpkgs.overlays = standardOverlays ++ extraOverlays; }
+      ]
+      ++ lib.optionals withHomeManager [
         home-manager.nixosModules.home-manager
         {
           home-manager.useGlobalPkgs = false;
@@ -69,7 +78,10 @@ in
             home.username = lib.mkForce username;
             home.homeDirectory = lib.mkForce "/home/${username}";
           };
-          home-manager.extraSpecialArgs = { inherit inputs self; myLib = self.lib; };
+          home-manager.extraSpecialArgs = {
+            inherit inputs self;
+            myLib = self.lib;
+          };
           home-manager.backupFileExtension = "backup";
         }
       ]
@@ -82,8 +94,10 @@ in
       hostname,
       system ? systems.aarch64-darwin,
       username ? "gaurav",
+      withHomeManager ? true,
       extraModules ? [ ],
       extraOverlays ? [ ],
+      ... # Ignore other flags
     }:
     nix-darwin.lib.darwinSystem {
       inherit system;
@@ -97,12 +111,17 @@ in
       modules = [
         ../hosts/${hostname}/default.nix
         { nixpkgs.overlays = [ inputs.brew-nix.overlays.default ] ++ standardOverlays ++ extraOverlays; }
+      ]
+      ++ lib.optionals withHomeManager [
         home-manager.darwinModules.home-manager
         inputs.determinate.darwinModules.default
         {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
-          home-manager.extraSpecialArgs = { inherit inputs self; myLib = self.lib; };
+          home-manager.extraSpecialArgs = {
+            inherit inputs self;
+            myLib = self.lib;
+          };
           home-manager.backupFileExtension = "backup";
           home-manager.users.${username} = {
             imports = [ ../hosts/${hostname}/home.nix ];
@@ -117,7 +136,10 @@ in
   # Unified System Helper
   mkSystem =
     { hostname, system, ... }@args:
-    if isDarwin system then self.lib.mkDarwinHost args else self.lib.mkNixosHost args;
+    if args.isDarwin or (isDarwin system) then
+      self.lib.mkDarwinHost args
+    else
+      self.lib.mkNixosHost args;
 
   # Standalone Home Manager configurations
   mkHomeConfig =
@@ -126,7 +148,8 @@ in
       system,
       username ? "gaurav",
       homeDirectory ? null,
-      extraModules ? [ ],
+      extraHomeModules ? [ ],
+      ... # Ignore extra args from mkConfigurations like extraModules, isNixos, isDarwin
     }:
     let
       pkgs = mkPkgs system;
@@ -140,7 +163,10 @@ in
     in
     home-manager.lib.homeManagerConfiguration {
       inherit pkgs;
-      extraSpecialArgs = { inherit inputs self; myLib = self.lib; };
+      extraSpecialArgs = {
+        inherit inputs self;
+        myLib = self.lib;
+      };
       modules = [
         ../hosts/${hostname}/home.nix
         {
@@ -148,6 +174,41 @@ in
           home.homeDirectory = lib.mkForce finalHomeDir;
         }
       ]
-      ++ extraModules;
+      ++ extraHomeModules;
+    };
+
+  # Generate all configurations from a single attrset of hosts
+  mkConfigurations =
+    hosts:
+    let
+      # Filter by system type (using flags if present, otherwise auto-detect)
+      nixosHosts = lib.filterAttrs (
+        name: host: host.isNixos or (!(host.isDarwin or (isDarwin host.system)))
+      ) hosts;
+      darwinHosts = lib.filterAttrs (name: host: host.isDarwin or (isDarwin host.system)) hosts;
+
+      # Create system configurations
+      nixosConfigurations = lib.mapAttrs (
+        name: host: mkNixosHost ({ hostname = name; } // host)
+      ) nixosHosts;
+      darwinConfigurations = lib.mapAttrs (
+        name: host: mkDarwinHost ({ hostname = name; } // host)
+      ) darwinHosts;
+
+      # Filter hosts that want standalone Home Manager
+      homeHosts = lib.filterAttrs (
+        name: host: host.withStandaloneHome or host.withHomeManager or true
+      ) hosts;
+
+      # Create Home Manager configurations mapped by "username@hostname"
+      homeConfigurations = lib.mapAttrs' (
+        name: host:
+        lib.nameValuePair "${host.username or "gaurav"}@${name}" (
+          mkHomeConfig ({ hostname = name; } // host)
+        )
+      ) homeHosts;
+    in
+    {
+      inherit nixosConfigurations darwinConfigurations homeConfigurations;
     };
 }
