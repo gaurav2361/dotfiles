@@ -11,7 +11,7 @@ lib.mkModule {
   config = {
     environment.systemPackages = with pkgs; [
       luarocks
-      nixpkgs-fmt
+      nixfmt
       harper
     ];
   };
