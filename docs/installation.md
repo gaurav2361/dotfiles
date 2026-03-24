@@ -5,135 +5,103 @@ We keep platform-specific commands separated to avoid confusion.
 
 > **Note:** these instructions assume you have `git` and basic system tools installed.
 
-## Install Nix
+---
 
-### macOS
+## 1. Prerequisites
 
-**Official Installer:**
+### Install Nix
 
-```bash
-sh <(curl --proto '=https' --tlsv1.2 -L https://nixos.org/nix/install)
-```
-
-**Determinate Nix:**
+We recommend the **Determinate Nix Installer** for a modern, flake-ready experience:
 
 ```bash
+# macOS & Linux
 curl -fsSL https://install.determinate.systems/nix | sh -s -- install
 ```
 
-### Linux
+### Setup SOPS (Age Key)
+**CRITICAL**: You MUST have your age private key in place **before** your first build, or `sops-nix` will fail to decrypt secrets.
 
-Please refer to the official documentation: [https://nixos.org/download/#nix-install-linux](https://nixos.org/download/#nix-install-linux)
-
-## Bootstrap nix-darwin (macOS)
-
-If this is your first time setting up `nix-darwin`, use the experimental `nix run` command to bootstrap:
-
-```bash
-sudo nix run nix-darwin/master#darwin-rebuild -- switch --flake .#coffee
-```
-
-Or for a generic hostname:
-
-```bash
-sudo nix run nix-darwin/master#darwin-rebuild -- switch --flake .#<hostname>
-```
-
-> **Note:** Nix is required for most setups.
+1.  Follow **[Secrets Guide](secrets.md)** to generate your key.
+2.  Ensure it is at `~/.config/sops/age/keys.txt`.
 
 ---
 
-## Quick clone
+## 2. Quick Clone
 
 ```bash
-git clone --recurse-submodules https://github.com/gaurav23617/dotfiles.git ~/dotfiles
+git clone --recurse-submodules https://github.com/gaurav2361/dotfiles.git ~/dotfiles
 cd ~/dotfiles
 ```
 
 ---
 
-## Nix (common notes)
+## 3. Bootstrap & Build
 
-These dotfiles are managed as a Nix flake. Some example commands below use the **experimental** flakes option (if your Nix is older / flakes disabled, enable flakes first — see your distro docs).
+### macOS (Darwin)
 
-If you have Nix with flakes enabled, you can use `--impure` or `--extra-experimental-features` depending on your system. Example (modern Nix):
+If this is your first time setting up `nix-darwin`, bootstrap using the experimental `nix run`:
 
 ```bash
-# example: set NIX_CONFIG for experimental features (ad-hoc)
-NIX_CONFIG="experimental-features = nix-command flakes" nix build .#homeConfigurations.gaura v
+# Bootstrap using the 'coffee' host configuration
+sudo nix run nix-darwin/master#darwin-rebuild -- switch --flake .#coffee
 ```
 
-Below are example commands for macOS (darwin) and Linux (NixOS). Tweak host names (`atlas`, `coffee`, `hades`) to match your setup.
-
----
-
-## Linux (NixOS)
-
-### Full NixOS system (as root)
+### Linux (NixOS)
 
 ```bash
-# Example: build and switch to the 'atlas' host configuration as root
+# Build and switch to the 'atlas' host configuration as root
 sudo nixos-rebuild switch --flake .#atlas
 ```
 
-### Home Manager only
+---
+
+## 4. Modern Management with `nh` (Recommended)
+
+This configuration includes **`nh` (Nix Helper)** for a better CLI experience.
+
+### System Updates
+Instead of `nixos-rebuild` or `darwin-rebuild`, use:
 
 ```bash
-# Home Manager switch for a specific host user/host
-home-manager switch --flake .#gaurav@atlas
+nh os switch . -- --hostname <hostname>
 ```
 
-### Experimental flakes usage (if you rely on experimental features)
-
-If your nix is configured without flakes globally, you can run:
-
-```bash
-# Example for ad-hoc enabling (bash/zsh)
-NIX_CONFIG="experimental-features = nix-command flakes" home-manager switch --flake .#gaurav@atlas
-```
-
-or, if you prefer to use the nix CLI:
+### Home Manager Updates
+Instead of `home-manager switch`, use:
 
 ```bash
-nix --extra-experimental-features 'nix-command flakes' build .#whatever
+nh home switch . -- --hostname <username>@<hostname>
 ```
 
 ---
 
-## macOS (Darwin)
+## 5. Standard Tools (Fallback)
 
-### Full Darwin rebuild
+If you don't use `nh` or prefer the standard commands:
 
-```bash
-# Build and switch to the 'coffee' host configuration
-darwin-rebuild switch --flake .#coffee
-```
-
-### Home Manager only
-
+### Home Manager (Standalone)
 ```bash
 home-manager switch --flake .#gaurav@coffee
 ```
 
-### Experimental flakes usage on macOS
-
+### Manual Flake Build
 ```bash
-# ad-hoc enabling of flakes if your Nix isn't globally configured
-NIX_CONFIG="experimental-features = nix-command flakes" darwin-rebuild switch --flake .#coffee
+nix build .#darwinConfigurations.coffee.system
+./result/sw/bin/darwin-rebuild switch --flake .#coffee
 ```
 
 ---
 
 ## Post-install
 
-1. Make sure to configure your `git` user details in `config/git/config` or via `git config --global`.
-2. Ensure you have your `sops/age` keys (see `docs/secrets.md`) for encrypted secrets to be usable by `sops-nix`.
-3. After switching, run `home-manager switch` for user-level changes if needed.
+1.  **Git Configuration**: Ensure your user details are set in `config/git/config`.
+2.  **Shell**: If you switched to Zsh/Nushell, you might need to add them to `/etc/shells` if Nix didn't do it automatically.
+3.  **Secrets**: Re-run the switch command after adding your SSH/Signing keys to your personal `secrets.yaml`.
 
 ---
 
-## Troubleshooting & tips
+## Troubleshooting
 
-- If flakes commands fail, ensure your Nix is up-to-date and `nix-command` + `flakes` are enabled either in `/etc/nix/nix.conf` or via `NIX_CONFIG` env.
-- For debugging: use `nix build` on the flake outputs to see build errors before switching.
-- For flake references across machines, you can use the flake URL `github:gaurav23617/dotfiles` or pin a flake lock.
+- **Missing Keys**: If you get a "SOPS error" during build, check `~/.config/sops/age/keys.txt`.
+- **Experimental Features**: If `nix` commands fail, ensure `nix-command` and `flakes` are in `nix.conf`.
+- **Dirty Tree**: If the flake doesn't pick up new files, remember to `git add` them first.
