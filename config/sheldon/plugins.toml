@@ -5,8 +5,8 @@ defer = """{% for file in files %}zsh-defer source "{{ file }}"
 {% endfor %}"""
 
 [plugins.zsh-defer]
+apply  = [ "source" ]
 github = "romkatv/zsh-defer"
-apply = ["source"]
 
 [plugins.zsh-vi-mode]
 github = "jeffreytse/zsh-vi-mode"
@@ -15,28 +15,28 @@ github = "jeffreytse/zsh-vi-mode"
 github = "zsh-users/zsh-autosuggestions"
 
 [plugins.fzf-tab]
+apply  = [ "defer" ]
 github = "Aloxaf/fzf-tab"
-apply = ["defer"]
 
 [plugins.zsh-autopair]
+apply  = [ "defer" ]
 github = "hlissner/zsh-autopair"
-apply = ["defer"]
 
 [plugins.zsh-completions]
+apply  = [ "defer" ]
 github = "zsh-users/zsh-completions"
-apply = ["defer"]
 
 [plugins.zsh-syntax-highlighting]
+apply  = [ "defer" ]
 github = "zsh-users/zsh-syntax-highlighting"
-apply = ["defer"]
 
 [plugins.zsh-history-substring-search]
+apply  = [ "defer" ]
 github = "zsh-users/zsh-history-substring-search"
-apply = ["defer"]
 
 [plugins.history-search-multi-word]
+apply  = [ "defer" ]
 github = "zdharma-continuum/history-search-multi-word"
-apply = ["defer"]
 
 
 # pnpm completions (deferred, needs compinit first)
@@ -44,8 +44,8 @@ apply = ["defer"]
 inline = 'export ZSH_PNPM_NO_ALIASES="true"'
 
 [plugins.zsh-pnpm-completions]
+apply  = [ "defer" ]
 github = "michakfromparis/zsh-pnpm-completions"
-apply = ["defer"]
 
 # Override pnpm script completion (must run after zsh-pnpm-completions)
 [plugins.pnpm-scripts-override]

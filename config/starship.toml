@@ -1,19 +1,19 @@
 # ~/.config/starship.toml
 
-add_newline = false
+add_newline     = false
 command_timeout = 1000
 
 format = """$character$directory$custom"""
 
 [character]
+error_symbol   = '[ ➜](bold red)'
 success_symbol = '[ ➜](bold green)'
-error_symbol = '[ ➜](bold red)'
 
 [directory]
-format = '[$path]($style) '
-style = 'bold cyan'
+format            = '[$path]($style) '
+home_symbol       = '~'
+style             = 'bold cyan'
 truncation_length = 3
-home_symbol = '~'
 
 # Custom git info
 [custom.git_info]
@@ -27,9 +27,9 @@ if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
     fi
 fi
 '''
-when = 'git rev-parse --is-inside-work-tree >/dev/null 2>&1'
 format = '$output'
-shell = ['sh']
+shell = [ 'sh' ]
+when = 'git rev-parse --is-inside-work-tree >/dev/null 2>&1'
 
 [git_branch]
 disabled = true
