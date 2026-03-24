@@ -88,7 +88,7 @@
       formatter = lib.forAllSystems (system: nixpkgs.legacyPackages.${system}.nixfmt-rfc-style);
 
       # Common overlays
-      inherit (lib.flake) overlays;
+      inherit (lib) overlays;
 
       # System configurations
       nixosConfigurations = {
