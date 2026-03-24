@@ -18,6 +18,7 @@ baseLib
     mkDarwinHost
     mkSystem
     mkHomeConfig
+    mkConfigurations
     ;
 
   inherit (moduleHelper)

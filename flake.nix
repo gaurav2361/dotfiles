@@ -79,54 +79,48 @@
     let
       # Initialize our custom library
       lib = import ./lib { inherit inputs; };
-    in
-    {
-      # Expose lib for use within the flake and by other flakes
-      inherit lib;
 
-      # Standard formatter for all supported systems
-      formatter = lib.forAllSystems (system: nixpkgs.legacyPackages.${system}.nixfmt-rfc-style);
-
-      # Common overlays
-      inherit (lib) overlays;
-
-      # System configurations
-      nixosConfigurations = {
-        atlas = lib.mkSystem {
+      # Define our hosts
+      hosts = {
+        atlas = {
+          isNixos = true;
           hostname = "atlas";
+          username = "gaurav";
           system = lib.systems.x86_64-linux;
+          withHomeManager = false;
         };
-
-        hades = lib.mkSystem {
+        hades = {
+          isNixos = true;
           hostname = "hades";
+          username = "gaurav";
           system = lib.systems.x86_64-linux;
           extraModules = [
             disko.nixosModules.disko
             ./hosts/hades/disko-config.nix
           ];
         };
-
-      };
-
-      darwinConfigurations.coffee = lib.mkSystem {
-        hostname = "coffee";
-        system = lib.systems.aarch64-darwin;
-      };
-
-      # Standalone Home Manager configurations
-      homeConfigurations = {
-        "gaurav@coffee" = lib.mkHomeConfig {
+        coffee = {
+          isDarwin = true;
           hostname = "coffee";
+          username = "gaurav";
           system = lib.systems.aarch64-darwin;
         };
-        "gaurav@atlas" = lib.mkHomeConfig {
-          hostname = "atlas";
-          system = lib.systems.x86_64-linux;
-        };
-        "gaurav@hades" = lib.mkHomeConfig {
-          hostname = "hades";
-          system = lib.systems.x86_64-linux;
-        };
       };
+
+      # Generate all configurations
+      configs = lib.mkConfigurations hosts;
+    in
+    {
+      # Expose lib for use within the flake and by other flakes
+      inherit lib;
+
+      # Standard formatter for all supported systems
+      formatter = lib.forAllSystems (system: nixpkgs.legacyPackages.${system}.nixfmt);
+
+      # Common overlays
+      inherit (lib) overlays;
+
+      # Automatically unpack generated configurations
+      inherit (configs) nixosConfigurations darwinConfigurations homeConfigurations;
     };
 }

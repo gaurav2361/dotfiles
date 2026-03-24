@@ -1,4 +1,9 @@
-{ myLib,  lib, config, ... }:
+{
+  myLib,
+  lib,
+  config,
+  ...
+}:
 {
   imports = [
     ./nushell.nix
@@ -18,5 +23,5 @@
   globalConfig = config;
   name = "shell.tools";
   description = "Shell tools ecosystem";
-  config = {}; # No actual config payload here, it just defines the option for the submodules to reference.
+  config = { }; # No actual config payload here, it just defines the option for the submodules to reference.
 }
