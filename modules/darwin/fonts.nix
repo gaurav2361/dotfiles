@@ -1,19 +1,12 @@
 {
   pkgs,
-  config,
   lib,
   ...
 }:
-with lib;
-let
-  cfg = config.modules.darwin.fonts;
-in
-{
-  options.modules.darwin.fonts = {
-    enable = mkEnableOption "macOS system fonts configuration";
-  };
-
-  config = mkIf cfg.enable {
+lib.myModules.mkModule {
+  name = "darwin.fonts";
+  description = "macOS system fonts configuration";
+  config = {
     fonts = {
       packages = with pkgs; [
         roboto
@@ -26,8 +19,6 @@ in
         nerd-fonts.jetbrains-mono
         nerd-fonts.zed-mono
       ];
-
-      # enableDefaultPackages = false;
     };
   };
 }

@@ -1,20 +1,31 @@
 { inputs }:
 let
+  inherit (inputs.nixpkgs) lib;
   configHelper = import ./configHelper.nix { inherit inputs; };
+  moduleHelper = import ./moduleHelper.nix { inherit lib; };
 in
-{
-  # Export everything from configHelper
-  inherit (configHelper)
-    systems
-    forAllSystems
-    standardOverlays
-    overlays
-    mkNixosHost
-    mkDarwinHost
-    mkSystem
-    mkHomeConfig
-    ;
+lib
+// {
+  # Renamed to avoid collision with lib.config and lib.modules
+  myLib = {
+    inherit (configHelper)
+      systems
+      forAllSystems
+      standardOverlays
+      overlays
+      mkNixosHost
+      mkDarwinHost
+      mkSystem
+      mkHomeConfig
+      ;
+  };
 
-  # You can add more library components here in the future
-  # utils = import ./utils.nix { inherit inputs; };
+  myModules = {
+    inherit (moduleHelper)
+      mkModule
+      mkBoolOpt
+      mkStrOpt
+      mkPkgOpt
+      ;
+  };
 }

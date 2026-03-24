@@ -57,9 +57,11 @@ in
       inherit system;
       specialArgs = {
         inherit inputs self;
+        lib = self.lib; # Pass our custom lib
         isNixOS = true;
         isDarwin = false;
       };
+
       modules = [
         ../hosts/${hostname}/default.nix
         { nixpkgs.overlays = standardOverlays ++ extraOverlays; }
@@ -92,9 +94,11 @@ in
       inherit system;
       specialArgs = {
         inherit inputs self;
+        lib = self.lib; # Pass our custom lib
         isDarwin = true;
         isNixOS = false;
       };
+
       modules = [
         ../hosts/${hostname}/default.nix
         { nixpkgs.overlays = [ inputs.brew-nix.overlays.default ] ++ standardOverlays ++ extraOverlays; }
@@ -118,7 +122,7 @@ in
   # Unified System Helper
   mkSystem =
     { hostname, system, ... }@args:
-    if isDarwin system then self.lib.mkDarwinHost args else self.lib.mkNixosHost args;
+    if isDarwin system then self.lib.myLib.mkDarwinHost args else self.lib.myLib.mkNixosHost args;
 
   # Helper for standalone Home Manager configurations
   mkHomeConfig =
