@@ -1,23 +1,18 @@
 { inputs }:
 let
-  inherit (inputs)
-    self
-    nixpkgs
-    nix-darwin
-    home-manager
-    ;
+  inherit (inputs) self nixpkgs nix-darwin home-manager;
   lib = nixpkgs.lib;
 
-  # Supported systems
-  systems = [
-    "x86_64-linux"
-    "aarch64-linux"
-    "x86_64-darwin"
-    "aarch64-darwin"
-  ];
+  # Define systems as an attrset for easy access
+  systems = {
+    x86_64-linux = "x86_64-linux";
+    aarch64-linux = "aarch64-linux";
+    x86_64-darwin = "x86_64-darwin";
+    aarch64-darwin = "aarch64-darwin";
+  };
 
   # Helper to generate attributes for all systems
-  forAllSystems = lib.genAttrs systems;
+  forAllSystems = lib.genAttrs (builtins.attrValues systems);
 
   # Standard overlays for all hosts
   standardOverlays = [
@@ -48,7 +43,7 @@ in
   mkNixosHost =
     {
       hostname,
-      system ? "x86_64-linux",
+      system ? systems.x86_64-linux,
       username ? "gaurav",
       extraModules ? [ ],
       extraOverlays ? [ ],
@@ -57,7 +52,7 @@ in
       inherit system;
       specialArgs = {
         inherit inputs self;
-        lib = self.lib; # Pass our custom lib
+        lib = self.lib;
         isNixOS = true;
         isDarwin = false;
       };
@@ -85,7 +80,7 @@ in
   mkDarwinHost =
     {
       hostname,
-      system ? "aarch64-darwin",
+      system ? systems.aarch64-darwin,
       username ? "gaurav",
       extraModules ? [ ],
       extraOverlays ? [ ],
@@ -94,7 +89,7 @@ in
       inherit system;
       specialArgs = {
         inherit inputs self;
-        lib = self.lib; # Pass our custom lib
+        lib = self.lib;
         isDarwin = true;
         isNixOS = false;
       };
@@ -124,7 +119,7 @@ in
     { hostname, system, ... }@args:
     if isDarwin system then self.lib.mkDarwinHost args else self.lib.mkNixosHost args;
 
-  # Helper for standalone Home Manager configurations
+  # Standalone Home Manager configurations
   mkHomeConfig =
     {
       hostname,

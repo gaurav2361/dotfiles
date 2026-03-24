@@ -6,11 +6,15 @@ let
 in
 lib
 // {
-  # Flake metadata and internal helpers
+  # Merge our system strings into the standard lib.systems
+  systems = lib.systems // configHelper.systems;
+
+  # Flatten common helpers
+  inherit (configHelper) forAllSystems;
+
+  # Internal Flake Helpers
   flake = {
     inherit (configHelper)
-      systems
-      forAllSystems
       standardOverlays
       overlays
       ;
