@@ -1,4 +1,3 @@
-# Hyprland is a dynamic tiling Wayland compositor.
 {
   inputs,
   pkgs,
@@ -6,16 +5,11 @@
   lib,
   ...
 }:
-with lib;
-let
-  cfg = config.modules.nixos.desktop.hyprland;
-in
-{
-  options.modules.nixos.desktop.hyprland = {
-    enable = mkEnableOption "NixOS Hyprland desktop environment";
-  };
-
-  config = mkIf cfg.enable {
+lib.mkModule {
+  globalConfig = config;
+  name = "nixos.desktop.hyprland";
+  description = "NixOS Hyprland desktop environment";
+  config = {
     programs.hyprland = {
       enable = true;
       withUWSM = true;
@@ -23,7 +17,6 @@ in
       portalPackage =
         inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
     };
-
     services.displayManager.defaultSession = "hyprland";
   };
 }

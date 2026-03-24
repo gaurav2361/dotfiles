@@ -1,20 +1,11 @@
 { config, lib, ... }:
-with lib;
-let
-  cfg = config.modules.nixos.locale;
-in
-{
-  options.modules.nixos.locale = {
-    enable = mkEnableOption "NixOS system locale and timezone";
-  };
-
-  config = mkIf cfg.enable {
-    # Set your time zone.
+lib.mkModule {
+  globalConfig = config;
+  name = "nixos.locale";
+  description = "NixOS system locale and timezone";
+  config = {
     time.timeZone = "Asia/Kolkata";
-
-    # Select internationalisation properties.
     i18n.defaultLocale = "en_US.UTF-8";
-
     i18n.extraLocaleSettings = {
       LC_ADDRESS = "en_US.UTF-8";
       LC_IDENTIFICATION = "en_US.UTF-8";

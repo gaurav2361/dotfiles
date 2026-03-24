@@ -1,84 +1,59 @@
-# Nvidia configuration for NixOS with Wayland and Hyprland support
 {
   pkgs,
   config,
   lib,
   ...
 }:
-with lib;
 let
-  # Using beta driver for recent GPUs like RTX 4070
   nvidiaDriverChannel = config.boot.kernelPackages.nvidiaPackages.beta;
-  cfg = config.modules.nixos.nvidia;
 in
-{
-  options.modules.nixos.nvidia = {
-    enable = mkEnableOption "NixOS NVIDIA proprietary drivers";
-  };
-
-  config = mkIf cfg.enable {
-    # Video drivers configuration for Xorg and Wayland
-    services.xserver.videoDrivers = [ "nvidia" ]; # Simplified - other modules are loaded automatically
-
-    # Kernel parameters for better Wayland and Hyprland integration
+lib.mkModule {
+  globalConfig = config;
+  name = "nixos.nvidia";
+  description = "NixOS NVIDIA proprietary drivers";
+  config = {
+    services.xserver.videoDrivers = [ "nvidia" ];
     boot.kernelParams = [
-      "nvidia-drm.modeset=1" # Enable mode setting for Wayland
-      "nvidia.NVreg_PreserveVideoMemoryAllocations=1" # Improves resume after sleep
-      "nvidia.NVreg_RegistryDwords=PowerMizerEnable=0x1;PerfLevelSrc=0x2222;PowerMizerLevel=0x3;PowerMizerDefault=0x3;PowerMizerDefaultAC=0x3" # Performance/power optimizations
+      "nvidia-drm.modeset=1"
+      "nvidia.NVreg_PreserveVideoMemoryAllocations=1"
+      "nvidia.NVreg_RegistryDwords=PowerMizerEnable=0x1;PerfLevelSrc=0x2222;PowerMizerLevel=0x3;PowerMizerDefault=0x3;PowerMizerDefaultAC=0x3"
     ];
-
-    # Blacklist nouveau to avoid conflicts
     boot.blacklistedKernelModules = [ "nouveau" ];
-
-    # Environment variables for better compatibility
     environment.variables = {
-      LIBVA_DRIVER_NAME = "nvidia"; # Hardware video acceleration
-      XDG_SESSION_TYPE = "wayland"; # Force Wayland
-      GBM_BACKEND = "nvidia-drm"; # Graphics backend for Wayland
-      __GLX_VENDOR_LIBRARY_NAME = "nvidia"; # Use Nvidia driver for GLX
-      WLR_NO_HARDWARE_CURSORS = "1"; # Fix for cursors on Wayland
-      NIXOS_OZONE_WL = "1"; # Wayland support for Electron apps
-      __GL_GSYNC_ALLOWED = "1"; # Enable G-Sync if available
-      __GL_VRR_ALLOWED = "1"; # Enable VRR (Variable Refresh Rate)
-      WLR_DRM_NO_ATOMIC = "1"; # Fix for some issues with Hyprland
-      NVD_BACKEND = "direct"; # Configuration for new driver
-      MOZ_ENABLE_WAYLAND = "1"; # Wayland support for Firefox
+      LIBVA_DRIVER_NAME = "nvidia";
+      XDG_SESSION_TYPE = "wayland";
+      GBM_BACKEND = "nvidia-drm";
+      __GLX_VENDOR_LIBRARY_NAME = "nvidia";
+      WLR_NO_HARDWARE_CURSORS = "1";
+      NIXOS_OZONE_WL = "1";
+      __GL_GSYNC_ALLOWED = "1";
+      __GL_VRR_ALLOWED = "1";
+      WLR_DRM_NO_ATOMIC = "1";
+      NVD_BACKEND = "direct";
+      MOZ_ENABLE_WAYLAND = "1";
     };
-
-    # Configuration for proprietary packages
-    nixpkgs.config = {
-      nvidia.acceptLicense = true;
-    };
-
-    # Nvidia configuration
+    nixpkgs.config.nvidia.acceptLicense = true;
     hardware = {
       nvidia = {
-        open = false; # Proprietary driver for better performance
-        nvidiaSettings = true; # Nvidia settings utility
+        open = false;
+        nvidiaSettings = true;
         powerManagement = {
-          enable = true; # Power management
-          finegrained = true; # More precise power consumption control
+          enable = true;
+          finegrained = true;
         };
-        modesetting.enable = true; # Required for Wayland
+        modesetting.enable = true;
         package = nvidiaDriverChannel;
-        forceFullCompositionPipeline = true; # Prevents screen tearing
-
-        # Configuration for hybrid AMD+Nvidia laptop
+        forceFullCompositionPipeline = true;
         prime = {
-          # Optimized configuration for switchable graphics laptops
           offload = {
-            enable = true; # Mode optimized for power saving
-            enableOffloadCmd = true; # Allows running applications with dedicated GPU
+            enable = true;
+            enableOffloadCmd = true;
           };
-          # sync.enable disabled as offload is generally better for laptops
           sync.enable = false;
-          # PCI IDs verified for your hardware
-          amdgpuBusId = "PCI:5:0:0"; # Integrated AMD GPU
-          nvidiaBusId = "PCI:1:0:0"; # Dedicated Nvidia GPU
+          amdgpuBusId = "PCI:5:0:0";
+          nvidiaBusId = "PCI:1:0:0";
         };
       };
-
-      # Enhanced graphics support
       graphics = {
         enable = true;
         package = nvidiaDriverChannel;
@@ -95,20 +70,14 @@ in
         ];
       };
     };
-
-    # Nix cache for CUDA
     nix.settings = {
       substituters = [ "https://cuda-maintainers.cachix.org" ];
-      trusted-public-keys = [
-        "cuda-maintainers.cachix.org-1:0dq3bujKpuEPMCX6U4WylrUDZ9JyUG0VpVZa7CNfq5E="
-      ];
+      trusted-public-keys = [ "cuda-maintainers.cachix.org-1:0dq3bujKpuEPMCX6U4WylrUDZ9JyUG0VpVZa7CNfq5E=" ];
     };
-
-    # Additional useful packages
     environment.systemPackages = with pkgs; [
       vulkan-tools
       glxinfo
-      libva-utils # VA-API debugging tools
+      libva-utils
     ];
   };
 }

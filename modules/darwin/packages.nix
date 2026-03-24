@@ -1,9 +1,11 @@
 {
   pkgs,
+  config,
   lib,
   ...
 }:
 lib.mkModule {
+  globalConfig = config;
   name = "darwin.packages";
   description = "macOS system packages configuration";
   config = {

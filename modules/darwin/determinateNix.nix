@@ -1,23 +1,17 @@
 {
-  config,
   inputs,
   pkgs,
+  config,
   lib,
   ...
 }:
-with lib;
-let
-  cfg = config.modules.darwin.determinateNix;
-in
-{
-  options.modules.darwin.determinateNix = {
-    enable = mkEnableOption "Determinate Systems Nix installer configuration";
-  };
-
-  config = mkIf cfg.enable {
+lib.mkModule {
+  globalConfig = config;
+  name = "darwin.determinateNix";
+  description = "Determinate Systems Nix installer configuration";
+  config = {
     determinateNix = {
       enable = true;
-
       customSettings = {
         trusted-users = [
           "root"
@@ -42,15 +36,8 @@ in
         fallback = true;
         warn-dirty = false;
       };
-
-      # Configure the Determinate daemon
-      determinateNixd = {
-        garbageCollector = {
-          strategy = "automatic";
-        };
-      };
+      determinateNixd.garbageCollector.strategy = "automatic";
     };
-
     nixpkgs.config = {
       allowUnfree = true;
       allowBroken = true;

@@ -4,18 +4,13 @@
   lib,
   ...
 }:
-with lib;
-let
-  cfg = config.modules.common.packages;
-in
-{
-  options.modules.common.packages = {
-    enable = mkEnableOption "Common software packages";
-  };
-
-  config = mkIf cfg.enable {
+lib.mkModule {
+  globalConfig = config;
+  name = "common.packages";
+  description = "Common software packages";
+  config = {
     environment.systemPackages = with pkgs; [
-      vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+      vim
       curl
       neovim
       wget
