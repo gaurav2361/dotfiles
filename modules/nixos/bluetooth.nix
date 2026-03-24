@@ -1,9 +1,11 @@
 {
   pkgs,
+  config,
   lib,
   ...
 }:
 lib.mkModule {
+  globalConfig = config;
   name = "nixos.bluetooth";
   description = "NixOS Bluetooth system";
   config = {

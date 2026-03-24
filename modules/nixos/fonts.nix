@@ -4,16 +4,11 @@
   lib,
   ...
 }:
-with lib;
-let
-  cfg = config.modules.nixos.fonts;
-in
-{
-  options.modules.nixos.fonts = {
-    enable = mkEnableOption "NixOS system fonts";
-  };
-
-  config = mkIf cfg.enable {
+lib.mkModule {
+  globalConfig = config;
+  name = "nixos.fonts";
+  description = "NixOS system fonts";
+  config = {
     fonts = {
       packages = with pkgs; [
         roboto
@@ -49,7 +44,6 @@ in
         maple-mono.truetype
         maple-mono.NF-unhinted
       ];
-
       enableDefaultPackages = false;
     };
   };

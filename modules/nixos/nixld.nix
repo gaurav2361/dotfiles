@@ -4,16 +4,11 @@
   lib,
   ...
 }:
-with lib;
-let
-  cfg = config.modules.nixos.nixld;
-in
-{
-  options.modules.nixos.nixld = {
-    enable = mkEnableOption "NixOS NixLD dynamic linker support";
-  };
-
-  config = mkIf cfg.enable {
+lib.mkModule {
+  globalConfig = config;
+  name = "nixos.nixld";
+  description = "NixOS NixLD dynamic linker support";
+  config = {
     programs.nix-ld = {
       enable = true;
       libraries = with pkgs; [

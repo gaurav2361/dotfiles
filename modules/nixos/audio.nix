@@ -1,18 +1,11 @@
-# Audio configuration for NixOS using PipeWire
 { config, lib, ... }:
-with lib;
-let
-  cfg = config.modules.nixos.audio;
-in
-{
-  options.modules.nixos.audio = {
-    enable = mkEnableOption "NixOS PulseAudio/Pipewire audio system";
-  };
-
-  config = mkIf cfg.enable {
+lib.mkModule {
+  globalConfig = config;
+  name = "nixos.audio";
+  description = "NixOS PulseAudio/Pipewire audio system";
+  config = {
     security.rtkit.enable = true;
     services.pulseaudio.enable = false;
-
     services.pipewire = {
       enable = true;
       alsa.enable = true;
@@ -21,13 +14,7 @@ in
       jack.enable = true;
       wireplumber = {
         enable = true;
-        extraConfig = {
-          "10-disable-camera" = {
-            "wireplumber.profiles" = {
-              main."monitor.libcamera" = "disabled";
-            };
-          };
-        };
+        extraConfig."10-disable-camera"."wireplumber.profiles".main."monitor.libcamera" = "disabled";
       };
     };
   };

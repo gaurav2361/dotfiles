@@ -1,37 +1,26 @@
-# Nix configuration for NixOS
 {
-  config,
   inputs,
+  config,
   lib,
   ...
 }:
-with lib;
-let
-  cfg = config.modules.nixos.nix;
-in
-{
-  options.modules.nixos.nix = {
-    enable = mkEnableOption "NixOS package manager subsystem";
-  };
-
-  config = mkIf cfg.enable {
-    # Allow unfree packages
+lib.mkModule {
+  globalConfig = config;
+  name = "nixos.nix";
+  description = "NixOS package manager subsystem";
+  config = {
     nixpkgs.config.allowBroken = true;
     nix = {
       channel.enable = false;
-      extraOptions = ''
-        warn-dirty = false
-      '';
+      extraOptions = "warn-dirty = false";
       optimise.automatic = true;
       settings = {
-        download-buffer-size = 262144000; # 250 MB (250 * 1024 * 1024)
-        # auto-optimise-store = true;
+        download-buffer-size = 262144000;
         experimental-features = [
           "nix-command"
           "flakes"
         ];
         substituters = [
-          # high priority since it's almost always used
           "https://cache.nixos.org?priority=10"
           "https://nix-community.cachix.org"
           "https://numtide.cachix.org"
@@ -43,10 +32,8 @@ in
         ];
         extra-substituters = [ "https://vicinae.cachix.org" ];
         extra-trusted-public-keys = [ "vicinae.cachix.org-1:1kDrfienkGHPYbkpNj1mWTr7Fm1+zcenzgTizIcI3oc=" ];
-
-        # ADD THESE NEW LINES:
-        builders-use-substitutes = true; # Use substitutes when building
-        max-jobs = 2; # Don't build anything locally, only download binaries
+        builders-use-substitutes = true;
+        max-jobs = 2;
         fallback = true;
       };
       gc = {

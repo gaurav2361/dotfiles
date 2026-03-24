@@ -4,75 +4,55 @@
   lib,
   ...
 }:
-with lib;
-let
-  cfg = config.modules.darwin.settings;
-in
-{
-  options.modules.darwin.settings = {
-    enable = mkEnableOption "macOS system defaults and UI settings";
-  };
-
-  config = mkIf cfg.enable {
-    # touch ID for sudo
-    # security.pam.services.sudo_local.touchIdAuth = true;
+lib.mkModule {
+  globalConfig = config;
+  name = "darwin.settings";
+  description = "macOS system defaults and UI settings";
+  config = {
     security.pam.services.sudo_local = {
       touchIdAuth = true;
       reattach = true;
     };
-
-    # system defaults and preferences
     system = {
       configurationRevision = self.rev or self.dirtyRev or null;
-
-      keyboard = {
-        enableKeyMapping = true;
-      };
-
+      keyboard.enableKeyMapping = true;
       startup.chime = false;
-
       defaults = {
         loginwindow = {
           GuestEnabled = false;
           DisableConsoleAccess = true;
         };
-
         screencapture = {
           location = "~/Pictures/screenshots";
           target = "file";
           type = "png";
         };
-
         finder = {
-          NewWindowTarget = "Home"; # new finder windows open home dir
-          AppleShowAllFiles = true; # hidden files
-          AppleShowAllExtensions = true; # file extensions
-          _FXShowPosixPathInTitle = true; # title bar full path
-          FXRemoveOldTrashItems = true; # auto empty trash
-          ShowPathbar = true; # breadcrumb nav at bottom
-          ShowStatusBar = true; # file count & disk space
-          CreateDesktop = false; # no desktop icons
-          QuitMenuItem = true; # allow quitting finder
-          ShowExternalHardDrivesOnDesktop = false; # Whether to show external disks on desktop
+          NewWindowTarget = "Home";
+          AppleShowAllFiles = true;
+          AppleShowAllExtensions = true;
+          _FXShowPosixPathInTitle = true;
+          FXRemoveOldTrashItems = true;
+          ShowPathbar = true;
+          ShowStatusBar = true;
+          CreateDesktop = false;
+          QuitMenuItem = true;
+          ShowExternalHardDrivesOnDesktop = false;
         };
-
         NSGlobalDomain = {
           NSAutomaticSpellingCorrectionEnabled = true;
           NSAutomaticCapitalizationEnabled = true;
           NSAutomaticPeriodSubstitutionEnabled = false;
-          NSAutomaticWindowAnimationsEnabled = true; # on/off animations of windows closing/opening
-          NSDocumentSaveNewDocumentsToCloud = false; # default save to disk, not iCloud
-          # AppleInterfaceStyle = Dark; # dark mode
+          NSAutomaticWindowAnimationsEnabled = true;
+          NSDocumentSaveNewDocumentsToCloud = false;
           "com.apple.trackpad.scaling" = 3.0;
           AppleShowAllExtensions = true;
           InitialKeyRepeat = 15;
           KeyRepeat = 2;
         };
-
         dock = {
           orientation = "bottom";
           autohide = true;
-          # autohide-delay = 0;
           show-recents = false;
           expose-animation-duration = 0.12;
           show-process-indicators = true;
@@ -83,12 +63,9 @@ in
           wvous-bl-corner = 1;
           wvous-br-corner = 1;
         };
-        controlcenter = {
-          BatteryShowPercentage = true;
-        };
+        controlcenter.BatteryShowPercentage = true;
       };
+      stateVersion = 6;
     };
-
-    system.stateVersion = 6;
   };
 }
