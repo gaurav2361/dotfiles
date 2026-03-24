@@ -1,4 +1,5 @@
-{ myLib, 
+{
+  myLib,
   lib,
   config,
   inputs,
@@ -7,7 +8,8 @@
 }:
 {
   imports = [ inputs.spicetify-nix.homeManagerModules.default ];
-} // myLib.mkHomeModule {
+}
+// myLib.mkHomeModule {
   globalConfig = config;
   name = "media.spicetify";
   description = "Spicetify Spotify client customizer";

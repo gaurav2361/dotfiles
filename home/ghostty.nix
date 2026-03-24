@@ -1,4 +1,5 @@
-{ myLib, 
+{
+  myLib,
   lib,
   config,
   inputs,
