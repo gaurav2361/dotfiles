@@ -85,19 +85,19 @@
       inherit lib;
 
       # Standard formatter for all supported systems
-      formatter = lib.forAllSystems (system: nixpkgs.legacyPackages.${system}.nixfmt-rfc-style);
+      formatter = lib.myLib.forAllSystems (system: nixpkgs.legacyPackages.${system}.nixfmt-rfc-style);
 
       # Common overlays
-      inherit (lib) overlays;
+      inherit (lib.myLib) overlays;
 
       # System configurations
       nixosConfigurations = {
-        atlas = lib.mkSystem {
+        atlas = lib.myLib.mkSystem {
           hostname = "atlas";
           system = "x86_64-linux";
         };
 
-        hades = lib.mkSystem {
+        hades = lib.myLib.mkSystem {
           hostname = "hades";
           system = "x86_64-linux";
           extraModules = [
@@ -107,22 +107,22 @@
         };
       };
 
-      darwinConfigurations.coffee = lib.mkSystem {
+      darwinConfigurations.coffee = lib.myLib.mkSystem {
         hostname = "coffee";
         system = "aarch64-darwin";
       };
 
       # Standalone Home Manager configurations
       homeConfigurations = {
-        "gaurav@coffee" = lib.mkHomeConfig {
+        "gaurav@coffee" = lib.myLib.mkHomeConfig {
           hostname = "coffee";
           system = "aarch64-darwin";
         };
-        "gaurav@atlas" = lib.mkHomeConfig {
+        "gaurav@atlas" = lib.myLib.mkHomeConfig {
           hostname = "atlas";
           system = "x86_64-linux";
         };
-        "gaurav@hades" = lib.mkHomeConfig {
+        "gaurav@hades" = lib.myLib.mkHomeConfig {
           hostname = "hades";
           system = "x86_64-linux";
         };

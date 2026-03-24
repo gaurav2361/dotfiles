@@ -1,19 +1,12 @@
 {
   pkgs,
-  config,
   lib,
   ...
 }:
-with lib;
-let
-  cfg = config.modules.darwin.packages;
-in
-{
-  options.modules.darwin.packages = {
-    enable = mkEnableOption "macOS system packages configuration";
-  };
-
-  config = mkIf cfg.enable {
+lib.myModules.mkModule {
+  name = "darwin.packages";
+  description = "macOS system packages configuration";
+  config = {
     environment.systemPackages = with pkgs; [
       luarocks
       nixpkgs-fmt
