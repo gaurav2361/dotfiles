@@ -3,7 +3,7 @@
   lib,
   ...
 }:
-lib.myModules.mkModule {
+lib.mkModule {
   name = "nixos.bluetooth";
   description = "NixOS Bluetooth system";
   config = {

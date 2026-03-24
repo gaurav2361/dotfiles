@@ -122,7 +122,7 @@ in
   # Unified System Helper
   mkSystem =
     { hostname, system, ... }@args:
-    if isDarwin system then self.lib.myLib.mkDarwinHost args else self.lib.myLib.mkNixosHost args;
+    if isDarwin system then self.lib.mkDarwinHost args else self.lib.mkNixosHost args;
 
   # Helper for standalone Home Manager configurations
   mkHomeConfig =

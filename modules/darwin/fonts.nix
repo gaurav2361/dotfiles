@@ -3,7 +3,7 @@
   lib,
   ...
 }:
-lib.myModules.mkModule {
+lib.mkModule {
   name = "darwin.fonts";
   description = "macOS system fonts configuration";
   config = {
