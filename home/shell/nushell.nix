@@ -1,4 +1,4 @@
-{
+{ myLib, 
   pkgs,
   lib,
   config,
@@ -12,7 +12,7 @@ let
     sha256 = "sha256-b2AeWiHRz1LbiGR1gOJHBV3H56QP7h8oSTzg+X4Shk8=";
   };
 in
-lib.mkHomeModule {
+myLib.mkHomeModule {
   globalConfig = config;
   name = "shell.nushell";
   description = "Nushell terminal environment";

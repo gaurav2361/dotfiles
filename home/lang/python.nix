@@ -1,10 +1,10 @@
-{
+{ myLib, 
   config,
   pkgs,
   lib,
   ...
 }:
-lib.mkHomeModule {
+myLib.mkHomeModule {
   globalConfig = config;
   name = "lang.python";
   description = "Python (uv) development environment";

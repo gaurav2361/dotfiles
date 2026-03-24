@@ -1,10 +1,10 @@
-{
+{ myLib, 
   config,
   lib,
   pkgs,
   ...
 }:
-lib.mkHomeModule {
+myLib.mkHomeModule {
   globalConfig = config;
   name = "versionControl.git.jj";
   description = "Enable Jujutsu (jj) version control system";

@@ -1,29 +1,25 @@
 { inputs }:
 let
-  inherit (inputs.nixpkgs) lib;
+  baseLib = inputs.nixpkgs.lib;
   configHelper = import ./configHelper.nix { inherit inputs; };
-  moduleHelper = import ./moduleHelper.nix { inherit lib; };
+  moduleHelper = import ./moduleHelper.nix { lib = baseLib; };
 in
-lib // {
+baseLib
+// {
   # Merge our system strings into the standard lib.systems
-  systems = lib.systems // configHelper.systems;
-  
-  # Flatten common helpers and metadata
-  inherit (configHelper) 
-    forAllSystems 
-    standardOverlays 
-    overlays
-    ;
+  systems = baseLib.systems // configHelper.systems;
 
-  # Flattened Host Creation Helpers
+  # Flatten common helpers and metadata
   inherit (configHelper)
+    forAllSystems
+    standardOverlays
+    overlays
     mkNixosHost
     mkDarwinHost
     mkSystem
     mkHomeConfig
     ;
 
-  # Flattened Module Helpers
   inherit (moduleHelper)
     mkModule
     mkHomeModule

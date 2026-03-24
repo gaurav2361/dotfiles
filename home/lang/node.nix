@@ -1,4 +1,4 @@
-{
+{ myLib, 
   config,
   pkgs,
   lib,
@@ -7,7 +7,7 @@
 let
   npmGlobalDir = "${config.home.homeDirectory}/.npm";
 in
-lib.mkHomeModule {
+myLib.mkHomeModule {
   globalConfig = config;
   name = "lang.node";
   description = "Node.js, Bun, and PNPM development environment";

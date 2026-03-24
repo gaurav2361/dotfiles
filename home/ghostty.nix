@@ -1,11 +1,11 @@
-{
+{ myLib, 
   lib,
   config,
   inputs,
   pkgs,
   ...
 }:
-lib.mkHomeModule {
+myLib.mkHomeModule {
   globalConfig = config;
   name = "terminal.ghostty";
   description = "ghostty terminal";

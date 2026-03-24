@@ -1,10 +1,10 @@
-{
+{ myLib, 
   pkgs,
   lib,
   config,
   ...
 }:
-lib.mkHomeModule {
+myLib.mkHomeModule {
   globalConfig = config;
   name = "shell.tools.direnv";
   description = "direnv environment switcher";

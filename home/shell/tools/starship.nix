@@ -1,10 +1,10 @@
-{
+{ myLib, 
   config,
   lib,
   pkgs,
   ...
 }:
-lib.mkHomeModule {
+myLib.mkHomeModule {
   globalConfig = config;
   name = "shell.tools.starship";
   description = "starship with custom dotfiles symlink";
