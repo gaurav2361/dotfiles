@@ -69,7 +69,7 @@ in
             home.username = lib.mkForce username;
             home.homeDirectory = lib.mkForce "/home/${username}";
           };
-          home-manager.extraSpecialArgs = { inherit inputs self; };
+          home-manager.extraSpecialArgs = { inherit inputs self; myLib = self.lib; };
           home-manager.backupFileExtension = "backup";
         }
       ]
@@ -102,7 +102,7 @@ in
         {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
-          home-manager.extraSpecialArgs = { inherit inputs self; };
+          home-manager.extraSpecialArgs = { inherit inputs self; myLib = self.lib; };
           home-manager.backupFileExtension = "backup";
           home-manager.users.${username} = {
             imports = [ ../hosts/${hostname}/home.nix ];
@@ -140,7 +140,7 @@ in
     in
     home-manager.lib.homeManagerConfiguration {
       inherit pkgs;
-      extraSpecialArgs = { inherit inputs self; };
+      extraSpecialArgs = { inherit inputs self; myLib = self.lib; };
       modules = [
         ../hosts/${hostname}/home.nix
         {

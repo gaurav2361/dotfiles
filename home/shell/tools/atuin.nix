@@ -4,17 +4,12 @@
   config,
   ...
 }:
-with lib;
-let
-  cfg = config.shell.tools.atuin;
-in
-{
-  options.shell.tools.atuin = {
-    enable = lib.mkEnableOption "Atuin shell history sync";
-  };
-  config = lib.mkIf cfg.enable {
-    # to address a slow startup sometimes
-    # go to https://github.com/atuinsh/atuin/issues/952
+lib.mkHomeModule {
+  globalConfig = config;
+  name = "shell.tools.atuin";
+  description = "Atuin shell history sync";
+  enableDefault = config.shell.tools.enable or false;
+  config = {
     programs.atuin = {
       enable = true;
       package = pkgs.atuin;

@@ -4,15 +4,11 @@
   config,
   ...
 }:
-with lib;
-let
-  cfg = config.shell.tools.direnv;
-in
-{
-  options.shell.tools.direnv = {
-    enable = lib.mkEnableOption "direnv environment switcher";
-  };
-  config = lib.mkIf cfg.enable {
+lib.mkHomeModule {
+  globalConfig = config;
+  name = "shell.tools.direnv";
+  description = "direnv environment switcher";
+  config = {
     programs.direnv = {
       enable = true;
       nix-direnv.enable = true;
@@ -20,10 +16,5 @@ in
       enableZshIntegration = true;
       enableNushellIntegration = true;
     };
-    # Optional: Uncomment if you want custom cache paths
-    # home.sessionVariables = {
-    #   DIRENV_DIR = "/tmp/direnv";
-    #   DIRENV_CACHE = "/tmp/direnv-cache";
-    # };
   };
 }

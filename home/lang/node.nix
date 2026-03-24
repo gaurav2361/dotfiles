@@ -5,19 +5,13 @@
   ...
 }:
 let
-  cfg = config.lang.node;
   npmGlobalDir = "${config.home.homeDirectory}/.npm";
 in
-{
-  options.lang.node = {
-    enable = lib.mkOption {
-      type = lib.types.bool;
-      default = false;
-      description = "Node.js, Bun, and PNPM development environment";
-    };
-  };
-
-  config = lib.mkIf cfg.enable {
+lib.mkHomeModule {
+  globalConfig = config;
+  name = "lang.node";
+  description = "Node.js, Bun, and PNPM development environment";
+  config = {
     home = {
       packages = with pkgs; [
         nodejs_24

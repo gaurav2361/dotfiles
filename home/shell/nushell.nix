@@ -4,9 +4,7 @@
   config,
   ...
 }:
-with lib;
 let
-  cfg = config.shell.nushell;
   nu-scripts = pkgs.fetchFromGitHub {
     owner = "nushell";
     repo = "nu_scripts";
@@ -14,27 +12,21 @@ let
     sha256 = "sha256-b2AeWiHRz1LbiGR1gOJHBV3H56QP7h8oSTzg+X4Shk8=";
   };
 in
-{
-  options.shell.nushell = {
-    enable = lib.mkEnableOption "Nushell terminal environment";
-  };
-
-  config = lib.mkIf cfg.enable {
+lib.mkHomeModule {
+  globalConfig = config;
+  name = "shell.nushell";
+  description = "Nushell terminal environment";
+  config = {
     home.packages = with pkgs; [
-      # Core utilities
       bat
       eza
       fd
       fzf
       ripgrep
-
-      # Shell enhancements
       atuin
       carapace
       starship
       zoxide
-
-      # Other tools
       lazygit
       sesh
       tldr
@@ -42,7 +34,6 @@ in
       yq
     ];
 
-    # Set XDG directory override BEFORE nushell module runs
     xdg.enable = true;
 
     programs.nushell = {
@@ -63,20 +54,9 @@ in
       '';
     };
 
-    # Copy entire nushell config directory to ~/.config/nushell
     home.file.".config/nushell" = {
       recursive = true;
       source = ../../config/nushell;
-    };
-
-    # CRITICAL: Set these environment variables so nushell uses .config/nushell
-    home.sessionVariables = {
-      # NU_CONFIG_DIR = "${config.home.homeDirectory}/.config/nushell";
-      # NU_LIB_DIRS = "${config.home.homeDirectory}/.config/nushell/scripts:${config.home.homeDirectory}/.config/nushell/completions";
-      # NU_PLUGIN_DIRS = "${config.home.homeDirectory}/.config/nushell/plugins:/run/current-system/sw/bin";
-      # XDG_CACHE_HOME  = "$HOME/.cache";
-      # XDG_CONFIG_HOME = "$HOME/.config";
-      # XDG_BIN_HOME    = "$HOME/.local/bin";
     };
   };
 }

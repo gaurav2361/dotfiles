@@ -4,19 +4,11 @@
   lib,
   ...
 }:
-let
-  cfg = config.lang.python;
-in
-{
-  options.lang.python = {
-    enable = lib.mkOption {
-      type = lib.types.bool;
-      default = false;
-      description = "Python (uv) development environment";
-    };
-  };
-
-  config = lib.mkIf cfg.enable {
+lib.mkHomeModule {
+  globalConfig = config;
+  name = "lang.python";
+  description = "Python (uv) development environment";
+  config = {
     home.packages = with pkgs; [
       python313 # Latest stable Python
       uv # Fast Python package manager

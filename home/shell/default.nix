@@ -1,13 +1,5 @@
 { lib, config, ... }:
-with lib;
-let
-  cfg = config.shell.tools;
-in
 {
-  options.shell.tools = {
-    enable = lib.mkEnableOption "Shell tools ecosystem";
-  };
-
   imports = [
     ./nushell.nix
     ./zsh.nix
@@ -21,4 +13,10 @@ in
     ./tools/nh.nix
     ./tools/btop.nix
   ];
+}
+// lib.mkHomeModule {
+  globalConfig = config;
+  name = "shell.tools";
+  description = "Shell tools ecosystem";
+  config = {}; # No actual config payload here, it just defines the option for the submodules to reference.
 }

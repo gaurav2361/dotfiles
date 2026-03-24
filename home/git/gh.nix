@@ -4,20 +4,12 @@
   config,
   ...
 }:
-with lib;
-let
-  cfg = config.versionControl.git.gh;
-in
-{
-  options.versionControl.git.gh = {
-    enable = lib.mkOption {
-      type = lib.types.bool;
-      default = config.versionControl.git.enable;
-      description = "Enable GitHub CLI tool (gh)";
-    };
-  };
-
-  config = lib.mkIf cfg.enable {
+lib.mkHomeModule {
+  globalConfig = config;
+  name = "versionControl.git.gh";
+  description = "Enable GitHub CLI tool (gh)";
+  enableDefault = config.versionControl.git.enable;
+  config = {
     programs.gh = {
       enable = true;
       gitCredentialHelper = {

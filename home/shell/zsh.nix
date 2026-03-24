@@ -4,16 +4,11 @@
   lib,
   ...
 }:
-with lib;
-let
-  cfg = config.shell.zsh;
-in
-{
-  options.shell.zsh = {
-    enable = lib.mkEnableOption "Zsh shell environment";
-  };
-
-  config = lib.mkIf cfg.enable {
+lib.mkHomeModule {
+  globalConfig = config;
+  name = "shell.zsh";
+  description = "Zsh shell environment";
+  config = {
     home.packages = with pkgs; [
       ripgrep
       tldr
@@ -35,9 +30,6 @@ in
       initContent = ''source "$HOME/.config/zsh/.zshrc"'';
     };
 
-    # home.file.".config/zsh".source = builtins.toString (
-    #   config.lib.file.mkOutOfStoreSymlink ../config/zsh
-    # );
     home.file.".config/zsh".source = builtins.toString (
       config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/config/zsh"
     );

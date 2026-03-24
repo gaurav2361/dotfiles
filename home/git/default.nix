@@ -4,22 +4,18 @@
   lib,
   ...
 }:
-with lib;
-let
-  cfg = config.versionControl.git;
-in
 {
   imports = [
     ./gh.nix
     ./jujutsu.nix
     ./lazygit.nix
   ];
-
-  options.versionControl.git = {
-    enable = lib.mkEnableOption "Git version control system";
-  };
-
-  config = lib.mkIf cfg.enable {
+}
+// lib.mkHomeModule {
+  globalConfig = config;
+  name = "versionControl.git";
+  description = "Git version control system";
+  config = {
     home.packages = with pkgs; [
       delta
       git-cliff

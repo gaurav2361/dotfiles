@@ -4,15 +4,12 @@
   config,
   ...
 }:
-with lib;
-let
-  cfg = config.shell.tools.bat;
-in
-{
-  options.shell.tools.bat = {
-    enable = lib.mkEnableOption "Bat cat clone with syntax highlighting";
-  };
-  config = lib.mkIf cfg.enable {
+lib.mkHomeModule {
+  globalConfig = config;
+  name = "shell.tools.bat";
+  description = "Bat cat clone with syntax highlighting";
+  enableDefault = config.shell.tools.enable or false;
+  config = {
     programs.bat = {
       enable = true;
     };

@@ -4,19 +4,12 @@
   lib,
   ...
 }:
-with lib;
-let
-  cfg = config.shell.tools.btop;
-in
-{
-  options.shell.tools.btop = {
-    enable = lib.mkOption {
-      type = lib.types.bool;
-      default = config.shell.tools.enable;
-      description = "Btop system monitor";
-    };
-  };
-  config = lib.mkIf cfg.enable {
+lib.mkHomeModule {
+  globalConfig = config;
+  name = "shell.tools.btop";
+  description = "Btop system monitor";
+  enableDefault = config.shell.tools.enable or false;
+  config = {
     programs.btop = {
       package = pkgs.btop-cuda;
       enable = true;
