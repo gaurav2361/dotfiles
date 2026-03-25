@@ -10,11 +10,11 @@ let
   cargo-plugins = with pkgs; [
     cargo-sweep # Cleanup build artifacts
     cargo-edit # cargo add/rm/upgrade
-    cargo-watch # hot reloading
     cargo-machete # find unused deps
     cargo-expand # macro expansion
     cargo-deny # dependency linter
     bacon # background checker
+    cargo-generate # cargo, make me a project
   ];
 in
 myLib.mkHomeModule {
