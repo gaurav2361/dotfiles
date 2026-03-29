@@ -136,7 +136,7 @@
             "tesseract-lang"
             "docker-compose"
             "tree-sitter-cli"
-            # "netbirdio/tap/netbird"
+            "netbirdio/tap/netbird"
           ];
           masApps = {
             "WhatsApp Messenger" = 310633997;
