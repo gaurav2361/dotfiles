@@ -42,9 +42,5 @@ lib.mkModule {
       allowUnfree = true;
       allowBroken = true;
     };
-    launchd.daemons.nix-daemon.serviceConfig = {
-      SoftResourceLimits.NumberOfFiles = 40960;
-      HardResourceLimits.NumberOfFiles = 40960;
-    };
   };
 }

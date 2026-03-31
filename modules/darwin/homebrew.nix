@@ -126,15 +126,15 @@
           brews = [
             "mas"
             "mole"
-            "colima"
+            # "colima"
             # "docker"
             "libiconv"
             "tesseract"
             "gemini-cli"
             "tree-sitter"
-            "docker-buildx"
+            # "docker-buildx"
             "tesseract-lang"
-            "docker-compose"
+            # "docker-compose"
             "tree-sitter-cli"
             "netbirdio/tap/netbird"
           ];

@@ -15,7 +15,7 @@ myLib.mkHomeModule {
       enable = true;
       clean = {
         enable = true;
-        extraArgs = "--keep-since 7d --keep 3";
+        extraArgs = "--delete-older-than 0d --gc";
       };
       flake = "${config.home.homeDirectory}/dotfiles";
     };
