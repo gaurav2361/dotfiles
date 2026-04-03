@@ -27,8 +27,7 @@ myLib.mkHomeModule {
       extraPackages = with pkgs; [
         tree-sitter
         lua54Packages.jsregexp
-        nodejs_22
-        nodePackages_latest.vscode-json-languageserver
+        nodejs_24
         vscode-langservers-extracted
         tailwindcss-language-server
         fzf

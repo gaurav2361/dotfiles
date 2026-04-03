@@ -25,7 +25,7 @@ lib.mkModule {
       go
       pkg-config
       coreutils
-      nodejs_22
+      nodejs_24
       python313
       just
       cargo
