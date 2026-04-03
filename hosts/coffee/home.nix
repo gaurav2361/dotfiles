@@ -44,7 +44,7 @@
   };
 
   media = {
-    mpv.enable = true;
+    mpv.enable = false;
     spicetify.enable = true;
   };
 
