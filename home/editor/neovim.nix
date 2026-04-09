@@ -17,6 +17,7 @@ myLib.mkHomeModule {
 
     programs.neovim = {
       enable = true;
+      withRuby = false;
       withPython3 = true;
       extraPython3Packages =
         ps: with ps; [

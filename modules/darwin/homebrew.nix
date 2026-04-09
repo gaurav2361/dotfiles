@@ -82,6 +82,7 @@
             "homebrew/cask"
             "mhaeuser/mhaeuser"
             "netbirdio/tap"
+            "Arthur-Ficial/tap"
           ];
           casks = [
             "iina"
@@ -113,6 +114,7 @@
             # "docker-compose"
             "tree-sitter-cli"
             "netbirdio/tap/netbird"
+            "Arthur-Ficial/tap/apfel"
           ];
 
           # This declarative block takes over App Store duties perfectly
