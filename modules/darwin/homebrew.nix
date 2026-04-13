@@ -103,6 +103,7 @@
           brews = [
             "mas"
             "mole"
+            "sheets"
             # "colima"
             # "docker"
             "libiconv"

@@ -1,3 +1,4 @@
+# hosts/coffee/home.nix
 {
   config,
   pkgs,

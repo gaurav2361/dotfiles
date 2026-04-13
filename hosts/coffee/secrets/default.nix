@@ -1,3 +1,4 @@
+# hosts/coffee/secrets/default.nix
 {
   config,
   pkgs,
