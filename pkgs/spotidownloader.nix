@@ -9,11 +9,11 @@
 
 stdenv.mkDerivation rec {
   pname = "spotidownloader";
-  version = "7.0.4";
+  version = "7.0.8";
 
   src = fetchurl {
-    url = "https://github.com/afkarxyz/SpotiDownloader/releases/download/v${version}/SpotiDownloader.dmg";
-    sha256 = "16c6133d260be23dd96486fe2f154e28425b28a71ff930babdc778b5171f5066";
+    url = "https://github.com/spotbye/SpotiDownloader/releases/download/v${version}/SpotiDownloader.dmg";
+    sha256 = "1195cc364e932403fae5907d36cdeea8aeeb5ad38c22bbb100a1de528b0dff68";
   };
 
   # makeWrapper is needed to inject ffmpeg into the app's environment

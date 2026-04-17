@@ -25,7 +25,7 @@
   };
 
   editors = {
-    zed.enable = true;
+    zed.enable = false;
     neovim.enable = true;
   };
 

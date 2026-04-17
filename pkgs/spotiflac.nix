@@ -9,11 +9,11 @@
 
 stdenv.mkDerivation rec {
   pname = "spotiflac";
-  version = "7.0.9";
+  version = "7.1.3";
 
   src = fetchurl {
-    url = "https://github.com/afkarxyz/SpotiFLAC/releases/download/v${version}/SpotiFLAC.dmg";
-    sha256 = "c268c2b84af05651d9d7f96ac98433193e6b5acf0337ab2fc17e8ce3f28a4ccc";
+    url = "https://github.com/spotbye/SpotiFLAC/releases/download/v${version}/SpotiFLAC.dmg";
+    sha256 = "d1918dc11b634b3bc9e81ecc82e0fa8f21fa6e6f30b34a01bfc00c72b9672424";
   };
 
   # makeWrapper is needed to inject ffmpeg into the app's environment
