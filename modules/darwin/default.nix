@@ -7,6 +7,7 @@
 {
   imports = [
     ./homebrew.nix
+    ./nanobrew.nix
     ./settings.nix
     ./packages.nix
     ./fonts.nix
