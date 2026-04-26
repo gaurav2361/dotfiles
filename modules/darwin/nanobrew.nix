@@ -5,10 +5,6 @@
   lib,
   ...
 }:
-let
-  # Internal configuration shortcut
-  cfg = config.modules.darwin.nanobrew;
-in
 {
   # 1. Import the base nix-nanobrew logic from flake inputs
   imports = [ inputs.nix-nanobrew.darwinModules.nix-nanobrew ];
@@ -18,33 +14,20 @@ in
       globalConfig = config;
       name = "darwin.nanobrew";
       description = "macOS nanobrew package manager setup";
+      config = {
+        # Extra system setup
+        environment.systemPackages = with pkgs; [ pkg-config ];
+        environment.systemPath = [ "/opt/nanobrew/prefix/bin" ];
 
-      # Define the module options with defaults from your preferred setup
-      options = {
-        brews = lib.mkOption {
-          type = lib.types.listOf lib.types.str;
-          default = [
-            "mas"
-            "mole"
-            "sheets"
-            # "colima"
-            # "docker"
-            "libiconv"
-            "tesseract"
-            "gemini-cli"
-            "tree-sitter"
-            # "docker-buildx"
-            "tesseract-lang"
-            # "docker-compose"
-            "tree-sitter-cli"
-            "netbirdio/tap/netbird"
-            "Arthur-Ficial/tap/apfel"
-          ];
-          description = "List of Homebrew formulae to install via nanobrew.";
-        };
-        casks = lib.mkOption {
-          type = lib.types.listOf lib.types.str;
-          default = [
+        # 2. Configure nix-nanobrew options directly as shown in homebrew.nix
+        nix-nanobrew = {
+          enable = true;
+          user = "gaurav";
+          autoMigrate = true;
+          package = inputs.nix-nanobrew.packages.${pkgs.stdenv.hostPlatform.system}.default;
+
+          # Declarative package lists hardcoded in the module
+          casks = [
             "iina"
             "blip"
             "bruno"
@@ -61,44 +44,27 @@ in
             # "netbirdio/tap/netbird-ui"
             "mhaeuser/mhaeuser/battery-toolkit"
           ];
-          description = "List of Homebrew casks to install via nanobrew.";
-        };
-        autoMigrate = lib.mkOption {
-          type = lib.types.bool;
-          default = true;
-          description = "Whether to automatically migrate existing Homebrew installations.";
-        };
-        user = lib.mkOption {
-          type = lib.types.str;
-          default = "gaurav";
-          description = "The user who should own /opt/nanobrew.";
-        };
-        package = lib.mkOption {
-          type = lib.types.package;
-          default = inputs.nix-nanobrew.packages.${pkgs.stdenv.hostPlatform.system}.default;
-          description = "The nanobrew package to use.";
-        };
-      };
 
-      # Implementation logic
-      config = {
-        # 2. Configure nix-nanobrew options directly as shown in the example
-        nix-nanobrew = {
-          enable = true;
-          inherit (cfg)
-            user
-            autoMigrate
-            brews
-            casks
-            package
-            ;
+          brews = [
+            "mas"
+            "mole"
+            "sheets"
+            # "colima"
+            # "docker"
+            "libiconv"
+            "tesseract"
+            "gemini-cli"
+            "tree-sitter"
+            # "docker-buildx"
+            "tesseract-lang"
+            # "docker-compose"
+            "tree-sitter-cli"
+            "netbirdio/tap/netbird"
+            "Arthur-Ficial/tap/apfel"
+          ];
         };
 
-        # 3. Extra system setup
-        environment.systemPackages = with pkgs; [ pkg-config ];
-        environment.systemPath = [ "/opt/nanobrew/prefix/bin" ];
-
-        # 4. Handle Xcode prerequisites (standard pattern)
+        # 3. Handle Xcode prerequisites (standard pattern)
         system.activationScripts.preActivation.text = ''
           echo "━━━ Checking Prerequisites ━━━"
           if ! xcode-select -p &> /dev/null; then
