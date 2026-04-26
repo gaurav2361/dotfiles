@@ -8,8 +8,8 @@
 {
 
   home.packages = with pkgs; [
-    spotiflac
-    spotidownloader
+    # spotiflac
+    # spotidownloader
   ];
 
   imports = [
@@ -46,7 +46,6 @@
 
   media = {
     mpv.enable = false;
-    spicetify.enable = true;
   };
 
   versionControl.git.enable = true;

@@ -6,40 +6,26 @@
   pkgs,
   ...
 }:
-{
-  imports = [ inputs.spicetify-nix.homeManagerModules.default ];
-}
-// myLib.mkHomeModule {
+let
+  spicePkgs = inputs.spicetify-nix.legacyPackages.${pkgs.stdenv.hostPlatform.system};
+in
+myLib.mkHomeModule {
   globalConfig = config;
   name = "media.spicetify";
-  description = "Spicetify Spotify client customizer";
-  config = {
-    home.packages = [ ];
+  description = "Spotify client customizer (Linux only)";
+  config = lib.mkIf pkgs.stdenv.isLinux {
+    programs.spicetify = {
+      enable = true;
+      theme = spicePkgs.themes.catppuccin;
+      colorScheme = "mocha";
 
-    programs.spicetify =
-      let
-        spicePkgs = inputs.spicetify-nix.legacyPackages.${pkgs.stdenv.hostPlatform.system};
-      in
-      {
-        enable = true;
-        theme = spicePkgs.themes.text;
-        colorScheme = "TokyoNight";
-
-        enabledExtensions = with spicePkgs.extensions; [
-          # adblock
-          shuffle # shuffle+ (special characters  sanitized out of ext names)
-          keyboardShortcut # vimium-like navigation
-          volumePercentage
-        ];
-
-        # Uncomment and customize as needed:
-        enabledCustomApps = with spicePkgs.apps; [
-          lyricsPlus
-          localFiles
-          ncsVisualizer
-          historyInSidebar
-          betterLibrary
-        ];
-      };
+      enabledExtensions = with spicePkgs.extensions; [
+        shuffle
+        keyboardShortcut
+      ];
+    };
   };
+}
+// {
+  imports = [ inputs.spicetify-nix.homeManagerModules.default ];
 }
