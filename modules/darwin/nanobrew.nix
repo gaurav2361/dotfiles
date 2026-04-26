@@ -19,24 +19,53 @@ in
       name = "darwin.nanobrew";
       description = "macOS nanobrew package manager setup";
 
-      # Flake no longer declares modules.darwin.nanobrew.enable
-      declareEnable = true;
-
-      # Define the module options
+      # Define the module options with defaults from your preferred setup
       options = {
         brews = lib.mkOption {
           type = lib.types.listOf lib.types.str;
-          default = [ ];
+          default = [
+            "mas"
+            "mole"
+            "sheets"
+            # "colima"
+            # "docker"
+            "libiconv"
+            "tesseract"
+            "gemini-cli"
+            "tree-sitter"
+            # "docker-buildx"
+            "tesseract-lang"
+            # "docker-compose"
+            "tree-sitter-cli"
+            "netbirdio/tap/netbird"
+            "Arthur-Ficial/tap/apfel"
+          ];
           description = "List of Homebrew formulae to install via nanobrew.";
         };
         casks = lib.mkOption {
           type = lib.types.listOf lib.types.str;
-          default = [ ];
+          default = [
+            "iina"
+            "blip"
+            "bruno"
+            "motrix"
+            "raycast"
+            "spotify"
+            "obsidian"
+            "antigravity"
+            "google-drive"
+            "google-chrome"
+            "brave-browser"
+            # "helium-browser"
+            "keyboardcleantool"
+            # "netbirdio/tap/netbird-ui"
+            "mhaeuser/mhaeuser/battery-toolkit"
+          ];
           description = "List of Homebrew casks to install via nanobrew.";
         };
         autoMigrate = lib.mkOption {
           type = lib.types.bool;
-          default = false;
+          default = true;
           description = "Whether to automatically migrate existing Homebrew installations.";
         };
         user = lib.mkOption {
@@ -53,7 +82,7 @@ in
 
       # Implementation logic
       config = {
-        # Configure nix-nanobrew options directly
+        # 2. Configure nix-nanobrew options directly as shown in the example
         nix-nanobrew = {
           enable = true;
           inherit (cfg)
@@ -65,11 +94,11 @@ in
             ;
         };
 
-        # Extra system setup
+        # 3. Extra system setup
         environment.systemPackages = with pkgs; [ pkg-config ];
         environment.systemPath = [ "/opt/nanobrew/prefix/bin" ];
 
-        # Handle Xcode/Rosetta prerequisites (standard pattern)
+        # 4. Handle Xcode prerequisites (standard pattern)
         system.activationScripts.preActivation.text = ''
           echo "━━━ Checking Prerequisites ━━━"
           if ! xcode-select -p &> /dev/null; then
