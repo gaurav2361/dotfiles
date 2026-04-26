@@ -23,6 +23,8 @@
           HOMEBREW_PREFIX = "/opt/homebrew";
           HOMEBREW_CELLAR = "/opt/homebrew/Cellar";
           HOMEBREW_REPOSITORY = "/opt/homebrew";
+          HOMEBREW_NO_INSTALL_FROM_API = "0";
+          HOMEBREW_INSTALL_FROM_API = "1";
         };
         nix-homebrew = {
           enable = true;
@@ -30,9 +32,9 @@
           enableRosetta = true;
           autoMigrate = false;
           taps = {
-            "homebrew/homebrew-core" = inputs.homebrew-core;
-            "homebrew/homebrew-cask" = inputs.homebrew-cask;
-            "homebrew/homebrew-bundle" = inputs.homebrew-bundle;
+            # "homebrew/homebrew-core" = inputs.homebrew-core;
+            # "homebrew/homebrew-cask" = inputs.homebrew-cask;
+            # "homebrew/homebrew-bundle" = inputs.homebrew-bundle;
           };
         };
 
@@ -78,8 +80,8 @@
             upgrade = true;
           };
           taps = [
-            "homebrew/core"
-            "homebrew/cask"
+            # "homebrew/core"
+            # "homebrew/cask"
             "mhaeuser/mhaeuser"
             "netbirdio/tap"
             "Arthur-Ficial/tap"
@@ -87,10 +89,11 @@
           casks = [
             "iina"
             "blip"
+            "bruno"
             "motrix"
             "raycast"
+            "spotify"
             "obsidian"
-            "requestly"
             "antigravity"
             "google-drive"
             "google-chrome"
