@@ -30,11 +30,9 @@
         { path = "${config.home.homeDirectory}/dotfiles/config/git/config"; }
       ];
     };
-    home.file.".config/git/ignore".source = builtins.toString (
-      config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/config/git/gitignore"
-    );
-    home.file.".config/git/template".source = builtins.toString (
-      config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/config/git/template"
-    );
+    home.file.".config/git/ignore".source =
+      config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/config/git/gitignore";
+    home.file.".config/git/template".source =
+      config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/config/git/template";
   };
 }

@@ -17,8 +17,7 @@ myLib.mkHomeModule {
       else
         [ pkgs.brewCasks.ghostty ];
 
-    home.file.".config/ghostty".source = builtins.toString (
-      config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/config/ghostty"
-    );
+    home.file.".config/ghostty".source =
+      config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/config/ghostty";
   };
 }

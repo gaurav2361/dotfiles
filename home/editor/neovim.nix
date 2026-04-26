@@ -72,8 +72,8 @@ myLib.mkHomeModule {
       ];
     };
 
-    home.file.".config/nvim".source = builtins.toString (
-      config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/config/nvim"
-    );
+    # Disable HM-managed init.lua to allow symlinking the whole nvim directory
+    xdg.configFile."nvim/init.lua".enable = lib.mkForce false;
+    xdg.configFile."nvim".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/config/nvim";
   };
 }

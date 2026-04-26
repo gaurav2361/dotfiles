@@ -31,12 +31,10 @@ myLib.mkHomeModule {
       initContent = ''source "$HOME/.config/zsh/.zshrc"'';
     };
 
-    home.file.".config/zsh".source = builtins.toString (
-      config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/config/zsh"
-    );
+    home.file.".config/zsh".source =
+      config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/config/zsh";
 
-    home.file.".config/sheldon".source = builtins.toString (
-      config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/config/sheldon"
-    );
+    home.file.".config/sheldon".source =
+      config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/config/sheldon";
   };
 }
